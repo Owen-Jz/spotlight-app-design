@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>316 Logo Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Manrope:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#050507;--card:#0d0d12;--line:rgba(255,255,255,.08);--mute:#8d8d99;--or:#ff5a1f;--bl:#4c7dff;--go:#f2b53a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:#f4f4f6;font-family:Manrope,system-ui,sans-serif;padding:32px 16px 80px}
+  header{max-width:1200px;margin:0 auto 28px}
+  h1{font-family:Unbounded;font-weight:700;font-size:26px;letter-spacing:-.02em}
+  header p{color:var(--mute);margin-top:6px;font-size:14px}
+  .grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;display:flex;flex-direction:column}
+  .stage{height:300px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .meta{padding:18px 20px 22px;border-top:1px solid var(--line)}
+  .meta .k{font-family:Unbounded;font-size:11px;letter-spacing:.2em;color:var(--mute)}
+  .meta h2{font-family:Unbounded;font-size:18px;margin:6px 0}
+  .meta p{font-size:13px;color:#b9b9c3;line-height:1.5}
+  .icons{display:flex;gap:10px;margin-top:14px;align-items:center}
+  .app{width:54px;height:54px;border-radius:14px;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid var(--line)}
+  .small{font-size:11px;color:var(--mute)}
+
+  /* ---------- A · SPOTLIGHT ---------- */
+  .spot{font-family:Unbounded;font-weight:900;font-size:92px;letter-spacing:-.06em;display:flex;align-items:flex-end;position:relative;z-index:2}
+  .spot .beam{width:26px;height:78px;margin:0 6px 7px;border-radius:4px;background:linear-gradient(#fff,#ffd9c7 40%,var(--or));box-shadow:0 0 18px #ff8a55,0 0 50px var(--or);position:relative}
+  .cone{position:absolute;top:-40px;left:50%;width:230px;height:360px;transform:translateX(-50%);background:linear-gradient(rgba(255,210,180,.35),rgba(255,90,31,.08) 60%,transparent);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);filter:blur(6px);animation:sway 5s ease-in-out infinite;transform-origin:50% 0}
+  .dust{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.0;animation:dust 4s linear infinite}
+  @keyframes sway{0%,100%{transform:translateX(-50%) rotate(-4deg)}50%{transform:translateX(-50%) rotate(4deg)}}
+  @keyframes dust{0%{transform:translateY(0);opacity:0}20%{opacity:.7}100%{transform:translateY(160px);opacity:0}}
+  .spot .beam::after{content:"";position:absolute;inset:-4px;border-radius:6px;animation:flick 3s infinite}
+  @keyframes flick{0%,100%{box-shadow:0 0 0 transparent}48%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 30px #fff}52%{box-shadow:0 0 0 transparent}}
+
+  /* ---------- B · THREE LIGHTS ---------- */
+  .lights{position:absolute;width:190px;height:190px;animation:spin 12s linear infinite}
+  .lights i{position:absolute;width:76px;height:76px;border-radius:50%;mix-blend-mode:screen;filter:blur(2px)}
+  .lights i:nth-child(1){background:var(--or);left:32px;top:0}
+  .lights i:nth-child(2){background:var(--bl);left:4px;top:48px}
+  .lights i:nth-child(3){background:var(--go);left:60px;top:48px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .lights.soft i{filter:blur(22px);opacity:.8}
+  .tl-word{position:relative;z-index:2;font-family:Unbounded;font-weight:900;font-size:64px;letter-spacing:-.05em;margin-top:150px;mix-blend-mode:normal}
+  .b-wrap{display:flex;flex-direction:column;align-items:center}
+
+  /* ---------- C · ON AIR ---------- */
+  .onair{display:flex;align-items:center;gap:0;font-family:Unbounded;font-weight:900;font-size:78px;letter-spacing:-.05em;position:relative}
+  .sig{position:relative;width:34px;height:70px;margin:0 8px;display:flex;align-items:center;justify-content:center}
+  .sig b{width:14px;height:64px;border-radius:8px;background:var(--or);box-shadow:0 0 24px var(--or)}
+  .sig s{position:absolute;border:3px solid var(--or);border-left-color:transparent;border-bottom-color:transparent;border-radius:50%;transform:rotate(-45deg);opacity:0;animation:wave 1.8s ease-out infinite}
+  .sig s:nth-of-type(1){width:44px;height:44px}
+  .sig s:nth-of-type(2){width:66px;height:66px;animation-delay:.3s}
+  .sig s:nth-of-type(3){width:88px;height:88px;animation-delay:.6s}
+  @keyframes wave{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+  .live{position:absolute;top:-6px;right:-26px;font-family:Manrope;font-size:10px;font-weight:800;letter-spacing:.15em;background:var(--or);padding:3px 7px;border-radius:5px}
+  .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-right:5px;vertical-align:1px;animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.2}}
+
+  /* ---------- D · CHROME ---------- */
+  .chrome{font-family:Unbounded;font-weight:900;font-size:104px;letter-spacing:-.07em;font-style:italic;transform:skewX(-8deg);
+    background:linear-gradient(180deg,#fff 0%,#c9c9d4 38%,#4a4a57 50%,#e8e8ef 62%,#8a8a99 100%);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative;
+    filter:drop-shadow(0 12px 30px rgba(255,90,31,.25))}
+  .chrome::after{content:"316";position:absolute;inset:0;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.95) 50%,transparent 60%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3s ease-in-out infinite}
+  @keyframes shine{0%{background-position:100% 0}60%,100%{background-position:-50% 0}}
+  .d-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(255,90,31,.35),transparent 60%)}
+  .streak{position:absolute;height:2px;width:120px;background:linear-gradient(90deg,transparent,var(--or));left:-130px;animation:streak 2.4s ease-in infinite}
+  @keyframes streak{to{left:110%}}
+
+  .pick{display:inline-block;margin-top:12px;font-family:Unbounded;font-size:12px;font-weight:700;color:#050507;background:#fff;padding:8px 14px;border-radius:999px}
+</style>
+</head>
+<body>
+<header>
+  <h1>316 — pick a logo</h1>
+  <p>Four different directions, all animated. Reply with the letter (A, B, C or D). Mixing two is fine too, e.g. "B's icon + D's wordmark".</p>
+</header>
+
+<div class="grid">
+  <!-- A -->
+  <div class="card">
+    <div class="stage">
+      <div class="cone"></div>
+      <div id="dustA"></div>
+      <div class="spot">3<span class="beam"></span>6</div>
+    </div>
+    <div class="meta">
+      <div class="k">A</div>
+      <h2>Spotlight</h2>
+      <p>The "1" is a beam of stage light, with a real spotlight swaying over it. It means talent under the lights and fits the stage and live-show feel.</p>
+      <div class="icons">
+        <div class="app"><div style="width:9px;height:30px;border-radius:3px;background:linear-gradient(#fff,#ff5a1f);box-shadow:0 0 14px #ff5a1f"></div></div>
+        <span class="small">App icon: just the beam</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card">
+    <div class="stage">
+      <div class="lights soft" style="width:140px;height:130px;top:34px;transform-origin:70px 62px"><i></i><i></i><i></i></div>
+      <div class="lights" style="width:140px;height:130px;top:34px;transform-origin:70px 62px"><i style="opacity:.9"></i><i style="opacity:.9"></i><i style="opacity:.9"></i></div>
+      <div class="b-wrap"><div class="tl-word">316</div></div>
+    </div>
+    <div class="meta">
+      <div class="k">B</div>
+      <h2>Three Lights</h2>
+      <p>Three stage lights, one per show (Call, Task, Idea), overlapping into white where they meet: three shows on one stage. It fits the blurry-light intro direction.</p>
+      <div class="icons">
+        <div class="app"><div style="position:relative;width:40px;height:40px;animation:spin 12s linear infinite">
+          <i style="position:absolute;width:22px;height:22px;border-radius:50%;background:#ff5a1f;left:9px;top:0;mix-blend-mode:screen"></i>
+          <i style="position:absolute;width:22px;height:22px;border-radius:50%;background:#4c7dff;left:0;top:14px;mix-blend-mode:screen"></i>
+          <i style="position:absolute;width:22px;height:22px;border-radius:50%;background:#f2b53a;left:18px;top:14px;mix-blend-mode:screen"></i></div></div>
+        <span class="small">App icon: the three lights</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card">
+    <div class="stage">
+      <div class="onair">3<span class="sig"><s></s><s></s><s></s><b></b></span>6<span class="live">LIVE</span></div>
+    </div>
+    <div class="meta">
+      <div class="k">C</div>
+      <h2>On Air</h2>
+      <p>The "1" is a broadcast bar sending out signal waves, with a LIVE tag. It reads as "you're being called", like live TV.</p>
+      <div class="icons">
+        <div class="app"><div style="width:9px;height:28px;border-radius:5px;background:#ff5a1f;box-shadow:0 0 12px #ff5a1f"></div><div style="position:absolute;width:30px;height:30px;border:2px solid #ff5a1f;border-left-color:transparent;border-bottom-color:transparent;border-radius:50%;transform:rotate(45deg);animation:wave 1.8s infinite"></div></div>
+        <span class="small">App icon: signal bar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="card">
+    <div class="stage">
+      <div class="d-bg"></div>
+      <div class="streak" style="top:38%"></div>
+      <div class="streak" style="top:66%;animation-delay:1.1s"></div>
+      <div class="chrome">316</div>
+    </div>
+    <div class="meta">
+      <div class="k">D</div>
+      <h2>Chrome</h2>
+      <p>Heavy italic liquid-chrome numbers with a shine sweep and speed streaks. Loud and fast, like a music-award or sports brand.</p>
+      <div class="icons">
+        <div class="app"><span style="font-family:Unbounded;font-weight:900;font-style:italic;font-size:20px;letter-spacing:-.06em;background:linear-gradient(180deg,#fff,#c9c9d4 38%,#4a4a57 50%,#e8e8ef 62%,#8a8a99);-webkit-background-clip:text;color:transparent">316</span></div>
+        <span class="small">App icon: chrome 316</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // floating dust in the spotlight
+  const d = document.getElementById('dustA');
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span');
+    s.className = 'dust';
+    s.style.left = (40 + Math.random() * 20) + '%';
+    s.style.top = (Math.random() * 40) + '%';
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    s.style.animationDuration = (3 + Math.random() * 3) + 's';
+    d.appendChild(s);
+  }
+</script>
+</body>
+</html>

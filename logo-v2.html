@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>316 Icon Marks</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#1a0b06;--bg2:#050507;--glow:#ff5a1f;
+    --t1:#2b140c;--t2:#140906;--rim:rgba(255,190,160,.35);
+    --f1a:#fff1ea;--f1b:#ffa47a;--f2a:#ff6a2e;--f2b:#a8290a;
+  }
+  body.violet{
+    --bg1:#1a0b33;--bg2:#07050d;--glow:#8b5cf6;
+    --t1:#2a1650;--t2:#140a2a;--rim:rgba(210,190,255,.35);
+    --f1a:#f6ecff;--f1b:#c4a2ff;--f2a:#9a6bff;--f2b:#4b1fa8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:radial-gradient(ellipse at 50% 20%,var(--bg1),var(--bg2) 70%);color:#f4f4f6;font-family:Manrope,system-ui,sans-serif;padding:32px 16px 60px;transition:background .6s}
+  header{max-width:1000px;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  h1{font-family:Unbounded;font-weight:700;font-size:24px}
+  header p{color:#a3a3ae;font-size:14px;margin-top:6px}
+  .toggle{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:4px}
+  .toggle button{border:0;background:none;color:#aaa;font:700 13px Manrope;padding:8px 16px;border-radius:999px;cursor:pointer}
+  .toggle button.on{background:#fff;color:#111}
+  .row{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;margin-top:30px}
+  .cell{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .scene{perspective:900px;padding:40px}
+  .tile{width:240px;height:240px;border-radius:58px;position:relative;transform-style:preserve-3d;transition:transform .25s ease-out;
+    background:linear-gradient(160deg,var(--t1),var(--t2));
+    box-shadow:0 0 0 1px rgba(255,255,255,.06),inset 0 2px 0 var(--rim),inset 0 -20px 40px rgba(0,0,0,.35),0 40px 90px -20px var(--glow),0 0 120px -30px var(--glow);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;animation:rise 1s cubic-bezier(.2,.9,.3,1) both}
+  .tile::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(255,255,255,.12),transparent 70%)}
+  .tile .gloss{position:absolute;top:-30%;bottom:-30%;width:70px;left:-120px;transform:rotate(18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);filter:blur(6px);animation:gloss 4.5s 1.6s ease-in-out infinite}
+  @keyframes gloss{0%{left:-120px}40%,100%{left:340px}}
+  @keyframes rise{from{opacity:0;transform:translateY(30px) scale(.85);filter:blur(16px)}to{opacity:1;transform:none;filter:blur(0)}}
+  svg.mark{width:176px;height:176px;overflow:visible;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45)) drop-shadow(0 0 22px color-mix(in srgb,var(--glow) 55%,transparent))}
+  .f{opacity:0;transform-box:fill-box;transform-origin:center;animation:facet .9s cubic-bezier(.2,.9,.25,1.05) both}
+  @keyframes facet{from{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.7);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .cell h2{font-family:Unbounded;font-size:18px;margin-top:6px}
+  .cell p{font-size:13px;color:#b5b5c0;max-width:300px;margin-top:6px;line-height:1.5}
+  .use{display:flex;gap:18px;align-items:center;margin-top:18px}
+  .mini{width:60px;height:60px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--t1),var(--t2));box-shadow:inset 0 1px 0 var(--rim),0 10px 24px -8px var(--glow)}
+  .mini svg{width:38px;height:38px}
+  .word{display:flex;align-items:center;gap:8px;font-family:Unbounded;font-weight:900;font-size:22px;letter-spacing:-.04em}
+  .word .m{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--t1),var(--t2));box-shadow:inset 0 1px 0 var(--rim)}
+  .word .m svg{width:20px;height:20px}
+  .word b{color:var(--glow)}
+  .rec{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--glow)}
+  .replay{display:block;margin:30px auto 0;background:none;border:1px solid rgba(255,255,255,.15);color:#ddd;font:700 13px Manrope;padding:10px 18px;border-radius:999px;cursor:pointer}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>316 icon marks</h1>
+    <p>Glossy tile, folded slabs, glow. Move your mouse over a tile to tilt it.</p>
+  </div>
+  <div class="toggle"><button class="on" data-c="">Orange</button><button data-c="violet">Violet</button></div>
+</header>
+
+<div class="row">
+  <div class="cell">
+    <div class="scene"><div class="tile"><div class="gloss"></div>
+      <svg class="mark" viewBox="0 0 100 100" id="markA"></svg>
+    </div></div>
+    <span class="rec">★ Recommended</span>
+    <h2>A · Fast-Forward 3</h2>
+    <p>Two folded chevrons stacked into a "3". It reads as <b>3</b> and as <b>play / fast-forward</b>, which suits a show you watch and vote on.</p>
+    <div class="use">
+      <div class="mini"><svg viewBox="0 0 100 100" data-small="A"></svg></div>
+      <div class="word"><span class="m"><svg viewBox="0 0 100 100" data-small="A"></svg></span>3<b>1</b>6</div>
+    </div>
+  </div>
+
+  <div class="cell">
+    <div class="scene"><div class="tile" style="animation-delay:.15s"><div class="gloss" style="animation-delay:2.2s"></div>
+      <svg class="mark" viewBox="0 0 100 100" id="markB"></svg>
+    </div></div>
+    <span class="rec" style="visibility:hidden">.</span>
+    <h2>B · Stage Play</h2>
+    <p>A folded play button with a "1" standing in its throat: <b>a performer on the stage</b>. Closest in shape to your reference.</p>
+    <div class="use">
+      <div class="mini"><svg viewBox="0 0 100 100" data-small="B"></svg></div>
+      <div class="word"><span class="m"><svg viewBox="0 0 100 100" data-small="B"></svg></span>3<b>1</b>6</div>
+    </div>
+  </div>
+</div>
+<button class="replay" onclick="build(true)">↻ Replay animation</button>
+
+<script>
+// Each facet: points, face ("light" top surface or "dark" folded side), and the direction it flies in from.
+const MARKS = {
+  A: [ // two stacked chevrons = "3"
+    { p: "20,8 52,8 80,28 48,28",  f: 1, d: [-30, -20] },
+    { p: "48,28 80,28 52,48 20,48", f: 2, d: [30, -10] },
+    { p: "20,52 52,52 80,72 48,72", f: 1, d: [-30, 10] },
+    { p: "48,72 80,72 52,92 20,92", f: 2, d: [30, 20] },
+  ],
+  B: [ // folded play button + "1"
+    { p: "18,8 86,50 54,50 34,37.6", f: 1, d: [-20, -30] },
+    { p: "34,62.4 54,50 86,50 18,92", f: 2, d: [-20, 30] },
+    { p: "18,8 34,17.8 34,82.2 18,92", f: 3, d: [-35, 0] },
+  ],
+};
+const face = { 1: "url(#g1)", 2: "url(#g2)", 3: "url(#g3)" };
+
+function defs(id) {
+  return `<defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--f1a)"/><stop offset="1" style="stop-color:var(--f1b)"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" style="stop-color:var(--f2a)"/><stop offset="1" style="stop-color:var(--f2b)"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--f1b)"/><stop offset="1" style="stop-color:var(--f2a)"/></linearGradient>
+  </defs>`;
+}
+
+function draw(svg, key, animate) {
+  svg.innerHTML = defs() + MARKS[key].map((s, i) =>
+    `<polygon points="${s.p}" fill="${face[s.f]}" ${animate ? `class="f" style="--dx:${s.d[0]}px;--dy:${s.d[1]}px;animation-delay:${0.45 + i * 0.12}s"` : ""}
+      stroke="rgba(255,255,255,.18)" stroke-width=".6" stroke-linejoin="round"/>`
+  ).join("") +
+  // thin highlight on the top-left edges
+  (animate ? "" : "");
+}
+
+function build() {
+  draw(document.getElementById("markA"), "A", true);
+  draw(document.getElementById("markB"), "B", true);
+  document.querySelectorAll("[data-small]").forEach(s => draw(s, s.dataset.small, false));
+  document.querySelectorAll(".tile").forEach(t => { t.style.animation = "none"; t.offsetHeight; t.style.animation = ""; });
+}
+build();
+
+// pointer tilt
+document.querySelectorAll(".tile").forEach(t => {
+  t.parentElement.addEventListener("pointermove", e => {
+    const r = t.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    t.style.transform = `rotateY(${x * 22}deg) rotateX(${-y * 22}deg)`;
+  });
+  t.parentElement.addEventListener("pointerleave", () => (t.style.transform = ""));
+});
+
+document.querySelectorAll(".toggle button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".toggle button").forEach(x => x.classList.toggle("on", x === b));
+  document.body.className = b.dataset.c;
+});
+</script>
+</body>
+</html>

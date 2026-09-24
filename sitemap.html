@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>316 Network — Sitemap & Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f3f1; --paper:#fff; --ink:#1a1a1a; --mute:#8a8a86; --line:#d9d9d4;
+    --block:#e6e6e1; --block2:#cfcfc9; --accent:#ff4d2e; --call:#ff4d2e; --task:#2e7dff; --idea:#16a34a; --shared:#8b5cf6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:0 16px 80px}
+  header{max-width:1400px;margin:0 auto;padding:40px 0 24px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  h1{font-size:34px;font-weight:800;letter-spacing:-.02em}
+  h1 span{color:var(--accent)}
+  header p{color:var(--mute);margin-top:6px;font-size:14px}
+  .toggle{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px}
+  .toggle button{border:0;background:none;font:600 13px Inter;padding:8px 18px;border-radius:999px;cursor:pointer;color:var(--mute)}
+  .toggle button.on{background:var(--ink);color:#fff}
+  .wrap{max-width:1400px;margin:0 auto}
+  .view{display:none}.view.on{display:block}
+
+  /* ---------- SITEMAP ---------- */
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+  .flow .step{background:var(--ink);color:#fff;font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px}
+  .flow .arrow{color:var(--mute);font-size:18px}
+  .flow .step.alt{background:var(--paper);color:var(--ink);border:1.5px dashed var(--block2)}
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .col{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;border-top:5px solid var(--ink)}
+  .col h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+  .col h2{font-size:18px;margin-bottom:12px}
+  .col .node{display:flex;gap:10px;align-items:baseline;padding:9px 10px;border-radius:10px;cursor:pointer;font-size:14px;position:relative}
+  .col .node:hover{background:var(--bg)}
+  .col .node b{font-size:11px;color:var(--mute);min-width:24px}
+  .col .node small{display:block;color:var(--mute);font-size:12px;margin-top:2px}
+  .col .node.stage::before{content:"";position:absolute;left:21px;top:30px;bottom:-9px;border-left:1.5px dotted var(--block2)}
+  .col .node:last-child::before{display:none}
+  .col.call{border-top-color:var(--call)} .col.task{border-top-color:var(--task)}
+  .col.idea{border-top-color:var(--idea)} .col.shared{border-top-color:var(--shared)}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;background:#fff3cd;color:#8a6500;margin-left:6px;vertical-align:middle}
+  .legend{margin-top:24px;font-size:13px;color:var(--mute);display:flex;gap:18px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  /* ---------- WIREFRAMES ---------- */
+  .section-title{display:flex;align-items:center;gap:10px;margin:36px 0 16px;font-size:20px;font-weight:800}
+  .section-title i{width:12px;height:12px;border-radius:4px;background:var(--ink)}
+  .screens{display:flex;gap:22px;overflow-x:auto;padding:4px 4px 16px;scroll-snap-type:x mandatory}
+  .card{flex:0 0 auto;width:230px;scroll-snap-align:start}
+  .card .id{font-size:11px;font-weight:700;color:var(--mute);margin-bottom:6px}
+  .card .t{font-size:14px;font-weight:700;margin-top:10px}
+  .card .d{font-size:12px;color:var(--mute);margin-top:3px;line-height:1.45}
+  .card.flash .phone{outline:3px solid var(--accent);outline-offset:4px}
+  .phone{width:230px;height:470px;background:var(--paper);border:2px solid var(--ink);border-radius:30px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;overflow:hidden;position:relative;transition:outline .3s}
+  .phone.dark{background:#1b1b1b;border-color:#1b1b1b}
+  .phone.dark .b,.phone.dark .ln{background:#333}.phone.dark .tx,.phone.dark .hd{color:#ddd}
+  .sb{display:flex;justify-content:space-between;font-size:9px;font-weight:700;color:var(--mute);padding:0 6px}
+  .hd{font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+  .hd em{font-style:normal;width:18px;height:18px;border-radius:50%;background:var(--block)}
+  .b{background:var(--block);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--mute);font-weight:600;text-align:center;padding:4px;position:relative}
+  .media{background:repeating-linear-gradient(45deg,var(--block),var(--block) 6px,#ecece8 6px,#ecece8 12px)}
+  .ln{height:7px;border-radius:4px;background:var(--block)}
+  .tx{font-size:15px;font-weight:800;line-height:1.2}
+  .tx.c{text-align:center}
+  .btn{border-radius:12px;padding:10px;text-align:center;font-size:11px;font-weight:700;border:1.5px solid var(--ink)}
+  .btn.p{background:var(--ink);color:#fff}
+  .row{display:flex;gap:5px;flex-wrap:wrap}
+  .chip{font-size:9px;font-weight:600;border:1px solid var(--block2);border-radius:999px;padding:4px 8px;color:#555}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .li{display:flex;gap:8px;align-items:center}
+  .av{width:26px;height:26px;border-radius:50%;background:var(--block2);flex:0 0 auto}
+  .li .ls{flex:1;display:flex;flex-direction:column;gap:4px}
+  .grid{display:grid;gap:5px}
+  .tabs{margin-top:auto;display:flex;justify-content:space-around;border-top:1px solid var(--line);padding-top:8px}
+  .tabs span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:8px;color:var(--mute);font-weight:600}
+  .tabs span::before{content:"";width:16px;height:16px;border-radius:5px;background:var(--block)}
+  .tabs span.on{color:var(--ink)}.tabs span.on::before{background:var(--ink)}
+  .tabs span.plus::before{width:26px;height:20px;border-radius:7px;background:var(--accent)}
+  .timer{font-size:34px;font-weight:800;text-align:center;letter-spacing:-.02em}
+  .steps{display:flex;gap:3px}
+  .steps span{flex:1;height:5px;border-radius:3px;background:var(--block)}
+  .steps span.on{background:var(--ink)}
+  .note{background:#fff3cd;color:#6b5000;font-size:10px;line-height:1.35;padding:6px 8px;border-radius:8px;font-weight:500}
+  .sp{flex:1}
+  .ring{width:90px;height:90px;border-radius:50%;border:2px solid var(--ink);margin:0 auto;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;box-shadow:0 0 0 10px var(--block),0 0 0 20px #efefeb}
+  .phone.dark .ring{border-color:#fff;color:#fff;box-shadow:0 0 0 10px #2a2a2a,0 0 0 20px #232323}
+  .callbtns{display:flex;justify-content:space-around}
+  .callbtns span{width:44px;height:44px;border-radius:50%;background:#e5484d}
+  .callbtns span.g{background:#30a46c}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-top:2px solid var(--ink);border-radius:22px 22px 0 0;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .dim{position:absolute;inset:0;background:rgba(0,0,0,.25)}
+  footer{max-width:1400px;margin:40px auto 0;color:var(--mute);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>316 <span>Network</span> — Sitemap &amp; Wireframes</h1>
+    <p>Front-end demo scope · Three shows, one app: <b>The Call</b> · <b>The Task</b> · <b>The Idea</b></p>
+  </div>
+  <div class="toggle">
+    <button class="on" data-v="map">Sitemap</button>
+    <button data-v="wf">Wireframes</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="view on" id="map">
+    <div class="flow">
+      <div class="step">App Intro</div><div class="arrow">→</div>
+      <div class="step">Welcome</div><div class="arrow">→</div>
+      <div class="step">Sign up</div><div class="arrow">→</div>
+      <div class="step">Setup (role · plan · interests)</div><div class="arrow">→</div>
+      <div class="step">Home</div><div class="arrow">→</div>
+      <div class="step alt">The Call / The Task / The Idea</div><div class="arrow">→</div>
+      <div class="step alt">Vote → Live Final → Winner</div>
+    </div>
+    <div class="map" id="mapGrid"></div>
+    <div class="legend">
+      <span><i style="background:var(--ink)"></i>Core app</span>
+      <span><i style="background:var(--call)"></i>The Call — talent</span>
+      <span><i style="background:var(--task)"></i>The Task — speed challenge</span>
+      <span><i style="background:var(--idea)"></i>The Idea — pitch to investors</span>
+      <span><i style="background:var(--shared)"></i>Used by all shows</span>
+      <span><span class="tag" style="margin:0 6px 0 0">GUESS</span>Brief was cut off — confirm</span>
+    </div>
+    <p class="legend">Tap any screen to jump to its wireframe.</p>
+  </section>
+
+  <section class="view" id="wf"></section>
+</div>
+<footer>316 Network · low-fidelity structure only — no visual design yet · v0.1 · 2026-09-23</footer>
+
+<script>
+/* Each screen: id, name, short purpose, wireframe blocks, optional dark/guess */
+const T = (a)=>['tabs',a];
+const SECTIONS = [
+ {key:'core', color:'var(--ink)', label:'Entry', title:'Intro & Onboarding', screens:[
+  {id:'A1', n:'App Intro', d:'Animated brand intro — the "phone ringing" moment. Plays once, skippable.', dark:1, w:[['sp'],['ring','316'],['sp'],['tx','THE CALL IS COMING','c'],['p',2],['sp'],['note','Signature animation lives here']]},
+  {id:'A2', n:'Welcome Slides', d:'3 swipe cards, one per show: The Call, The Task, The Idea.', w:[['status'],['media',210,'Show preview loop'],['tx','The Call'],['p',2],['steps',3,0],['btn','Get Started',1],['btn','I have an account']]},
+  {id:'A3', n:'Sign Up / Log In', d:'Phone number first (OTP), plus Google / Apple.', w:[['status'],['head','Create account'],['input','Full name'],['input','Phone number'],['input','Country'],['btn','Send code',1],['or'],['btn','Continue with Google'],['btn','Continue with Apple']]},
+ ]},
+ {key:'core', color:'var(--ink)', label:'Setup', title:'Profile Setup', screens:[
+  {id:'B1', n:'Choose Your Role', d:'Talent (compete), Fan (watch & vote), Brand / Investor (sponsor & back ideas).', w:[['status'],['head','Who are you?'],['block',70,'🎤 Talent — I want to compete'],['block',70,'❤️ Fan — I watch & vote'],['block',70,'💼 Brand / Investor'],['sp'],['btn','Continue',1]]},
+  {id:'B2', n:'Subscribe', d:'Plans that unlock entering + votes. Step 3 of the brief.', w:[['status'],['head','Pick a plan'],['block',80,'Free — watch only'],['block',80,'Fan — votes / month'],['block',80,'Talent — enter shows'],['sp'],['btn','Subscribe',1]]},
+  {id:'B3', n:'Pick Interests', d:'Talent categories and Idea sectors. Shapes the feed.', w:[['status'],['head','What do you love?'],['label','Talent'],['chips',['Dance','Music','Poetry','Acting','Comedy','Special Talents'],[0,1]],['label','Ideas'],['chips',['Agriculture','Health','Tech','Fashion','Real Estate','Energy','+7'],[2]],['sp'],['btn','Enter 316',1]]},
+ ]},
+ {key:'core', color:'var(--ink)', label:'Main tabs', title:'Main App', screens:[
+  {id:'C1', n:'Home Feed', d:'Full-screen vertical videos. Live banner when a call is on. Vote from the feed.', dark:1, w:[['row2',['For You','Following','Live']],['media',300,'Full-screen entry video'],['li'],['tabs',0]]},
+  {id:'C2', n:'Shows', d:'The three shows, each with its current stage and a countdown.', w:[['status'],['head','Shows'],['block',95,'THE CALL · Round 2 · 14h left'],['block',95,'THE TASK · 3 of 10 spots left'],['block',95,'THE IDEA · Pitches open'],['tabs',1]]},
+  {id:'C3', n:'Enter (+)', d:'The middle tab: record or upload an entry for whichever show is open.', w:[['status'],['head','Enter a show'],['block',60,'Record 1-min pitch'],['block',60,'Upload task items'],['block',60,'Buy airtime for an idea'],['sp'],['tabs',2]]},
+  {id:'C4', n:'Rankings', d:'Leaderboards per show and category. Top spots stay hidden until reveal.', w:[['status'],['head','Rankings'],['chips',['Call','Task','Idea'],[0]],['podium'],['list',4],['tabs',3]]},
+  {id:'C5', n:'My Profile', d:'Entries, votes received, rounds reached, subscription.', w:[['status'],['center-av'],['tx','Your Name','c'],['stats'],['grid',3,6],['tabs',4]]},
+ ]},
+ {key:'call', color:'var(--call)', label:'Show 1', title:'The Call — Talent', stage:1, screens:[
+  {id:'D1', n:'Call Hub', d:'The whole journey on one screen: where the show is now and what comes next.', w:[['status'],['head','The Call'],['media',110,'Season promo'],['stagelist',['Sell yourself','Shortlist','Call 1 · 1-min task','Vote','Call 2 · 2-min task','Vote','Grand Final'],2]]},
+  {id:'D2', n:'Sell Yourself (1 min)', d:'Record a 60-second intro in the app. Pick a category first.', dark:1, w:[['row2',['Dance','Music','Comedy']],['media',290,'Camera viewfinder'],['timer','0:60'],['recbtn']]},
+  {id:'D3', n:'Shortlist Announced', d:'Public notice: the selected few, with the call date and time.', w:[['status'],['head','The chosen few'],['list',5],['block',50,'Call 1 · Sat 8:00 PM WAT'],['btn','Set reminder',1]]},
+  {id:'D4', n:'Incoming Call', d:'The signature moment: the app "rings" the contestant with the task. Accept to start.', dark:1, w:[['sp'],['tx','316 is calling…','c'],['p',1],['sp'],['ring','📞'],['sp'],['callbtns']]},
+  {id:'D5', n:'Call 1 — Instant Task', d:'Task revealed live and the 1-minute clock starts right away. Submit or it auto-submits.', w:[['status'],['block',70,'YOUR TASK: "…"'],['timer','0:47'],['media',200,'Recording'],['btn','Submit',1]]},
+  {id:'D6', n:'Voting Round', d:'Swipe through the finalists and vote. Votes only.', w:[['status'],['head','Round 1 vote'],['media',230,'Finalist clip'],['li'],['btn','Vote ❤️',1]]},
+  {id:'D7', n:'Call 2 — 24h Task', d:'A 2-minute task with 24 hours to submit. Judged on the act and the votes.', w:[['status'],['head','Call 2'],['block',60,'TASK brief'],['timer','23:12:05'],['btn','Record 2-min entry',1],['btn','Upload from gallery']]},
+  {id:'D8', n:'Grand Final — Split Screen', d:'Live. The host plus every finalist in tiles. Live votes and reactions.', dark:1, w:[['row2',['● LIVE','12.4k watching']],['split',4],['media',70,'Host'],['chat']]},
+  {id:'D9', n:'Winner Reveal', d:'Every tile drops away except the winner, left alone on screen with the host.', dark:1, w:[['sp'],['media',180,'Winner'],['media',80,'Host'],['tx','WINNER','c'],['p',1],['btn','Share',1]]},
+ ]},
+ {key:'task', color:'var(--task)', label:'Show 2', title:'The Task — Speed Challenge', stage:1, screens:[
+  {id:'E1', n:'Task Post', d:'The call to qualify: the list of items you must snap and upload.', w:[['status'],['head','The Task'],['media',120,'Task poster'],['check',['Item 1','Item 2','Item 3'],[]],['btn','Start',1]]},
+  {id:'E2', n:'The Race', d:'Live counter: first 10 to upload every item get in. Checklist fills as you snap.', w:[['status'],['timer','3 / 10'],['p',1],['check',['Item 1','Item 2','Item 3'],[0,1]],['media',90,'Camera'],['btn','Submit all',1]]},
+  {id:'E3', n:'Final 10 Announced', d:'Names, countries, and the date and time of the task.', w:[['status'],['head','The Final 10'],['list',6],['block',44,'Task · Sun 6:00 PM WAT']]},
+  {id:'E4', n:'Task Rounds + Votes', d:'Task, vote, cut. Round 1 → Round 2 → final. Uses the shared Vote sheet.', w:[['status'],['head','Round 2'],['steps',3,1],['grid',2,4,'Entry'],['btn','Vote now',1]]},
+  {id:'E5', n:'Task Winner', d:'Score = votes + performance. Show the breakdown.', w:[['status'],['media',160,'Winner'],['tx','Champion','c'],['bars'],['btn','Share',1]]},
+ ]},
+ {key:'idea', color:'var(--idea)', label:'Show 3', title:'The Idea — Pitch to Investors', stage:1, guess:1, screens:[
+  {id:'F1', n:'Pick a Sector', d:'13 sectors: Agriculture, Health care, Export, Tourism, Real Estate…', w:[['status'],['head','Your sector'],['grid',3,12,''],['btn','Next',1]]},
+  {id:'F2', n:'Buy Airtime', d:'Pay for pitch time. Packages like 1 / 3 / 5 minutes.', guess:1, w:[['status'],['head','Buy airtime'],['block',60,'1 min'],['block',60,'3 min'],['block',60,'5 min'],['sp'],['btn','Pay',1]]},
+  {id:'F3', n:'Pitch Call', d:'The founder calls in and explains the idea within their airtime.', dark:1, guess:1, w:[['row2',['● LIVE','02:14']],['media',260,'Founder'],['timer','02:14'],['callbtns']]},
+  {id:'F4', n:'Q&A + Clarification', d:'Questions and concerns, then a second call to clarify.', guess:1, w:[['status'],['head','Questions'],['list',4],['block',50,'Call 2 · Clarification'],['btn','Join call',1]]},
+  {id:'F5', n:'Meet the Investors', d:'The selected founders meet an investor panel.', guess:1, w:[['status'],['head','Investor room'],['split',4],['media',80,'Founder'],['btn','Pitch deck',0]]},
+  {id:'F6', n:'Vote & Announcement', d:'Public vote, a scheduled announcement date, then the final reveal.', guess:1, w:[['status'],['head','Final vote'],['list',4],['block',50,'Announcement · Oct 30'],['btn','Vote',1]]},
+ ]},
+ {key:'shared', color:'var(--shared)', label:'Shared', title:'Used by all shows', screens:[
+  {id:'G1', n:'Vote Sheet', d:'Bottom sheet: how many votes to give, votes left, top up.', w:[['media',300,''],['sheet']]},
+  {id:'G2', n:'Wallet & Plan', d:'Vote balance, subscription, airtime purchases.', w:[['status'],['head','Wallet'],['block',90,'Votes left: 240'],['list',3],['btn','Top up',1]]},
+  {id:'G3', n:'Contestant Profile', d:'Entries, rounds reached, country, category, vote total.', w:[['status'],['center-av'],['tx','Contestant','c'],['chips',['Nigeria','Music','Round 2'],[]],['grid',3,6],['btn','Vote',1]]},
+  {id:'G4', n:'Notifications', d:'"The Call is live", "You were chosen", "Voting closes in 1h".', w:[['status'],['head','Alerts'],['list',6]]},
+  {id:'G5', n:'Live Room', d:'Shared live screen: video, live chat, reactions, votes.', dark:1, w:[['row2',['● LIVE','8.1k']],['media',280,'Live stream'],['chat']]},
+  {id:'G6', n:'Settings', d:'Account, privacy, payment methods, help.', w:[['status'],['head','Settings'],['list',6]]},
+ ]},
+];
+
+/* ---------- render sitemap ---------- */
+const mg = document.getElementById('mapGrid');
+SECTIONS.forEach(s=>{
+  const c = document.createElement('div');
+  c.className = 'col ' + (s.key!=='core'?s.key:'');
+  c.innerHTML = `<h3>${s.label}</h3><h2>${s.title}${s.guess?'<span class="tag">GUESS</span>':''}</h2>` +
+    s.screens.map(x=>`<div class="node ${s.stage?'stage':''}" data-go="${x.id}"><b>${x.id}</b><div>${x.n}${x.guess&&!s.guess?'<span class="tag">GUESS</span>':''}<small>${x.d.split('.')[0]}.</small></div></div>`).join('');
+  mg.appendChild(c);
+});
+
+/* ---------- render wireframes ---------- */
+const lines = n => Array.from({length:n},(_,i)=>`<div class="ln" style="width:${[90,70,80,55][i%4]}%"></div>`).join('');
+function block(b){
+  const [k,a,c] = b;
+  switch(k){
+    case 'status': return `<div class="sb"><span>9:41</span><span>●●● ▮</span></div>`;
+    case 'head': return `<div class="hd">${a}<em></em></div>`;
+    case 'media': return `<div class="b media" style="height:${a}px;flex:0 0 auto">${c||''}</div>`;
+    case 'block': return `<div class="b" style="height:${a}px;justify-content:flex-start;padding-left:12px;font-size:11px;color:#555">${c}</div>`;
+    case 'tx': return `<div class="tx ${c||''}">${a}</div>`;
+    case 'p': return `<div style="display:flex;flex-direction:column;gap:5px;align-items:center">${lines(a)}</div>`;
+    case 'label': return `<div style="font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.08em">${a}</div>`;
+    case 'btn': return `<div class="btn ${c?'p':''}">${a}</div>`;
+    case 'or': return `<div style="text-align:center;font-size:9px;color:var(--mute)">— or —</div>`;
+    case 'input': return `<div style="border:1.5px solid var(--block2);border-radius:10px;padding:10px;font-size:10px;color:var(--mute)">${a}</div>`;
+    case 'chips': return `<div class="row">${a.map((x,i)=>`<span class="chip ${c.includes(i)?'on':''}">${x}</span>`).join('')}</div>`;
+    case 'row2': return `<div class="row" style="justify-content:center">${a.map((x,i)=>`<span class="chip ${i===0?'on':''}">${x}</span>`).join('')}</div>`;
+    case 'li': return `<div class="li"><div class="av"></div><div class="ls">${lines(2)}</div><div class="b" style="width:34px;height:34px;border-radius:50%">❤️</div></div>`;
+    case 'list': return Array.from({length:a},()=>`<div class="li"><div class="av"></div><div class="ls">${lines(2)}</div></div>`).join('');
+    case 'grid': return `<div class="grid" style="grid-template-columns:repeat(${a},1fr)">${Array.from({length:c},()=>`<div class="b" style="aspect-ratio:${a>2?'1':'3/4'}">${b[3]??''}</div>`).join('')}</div>`;
+    case 'tabs': return `<div class="tabs">${['Home','Shows','','Ranks','Me'].map((x,i)=>`<span class="${i===2?'plus':''} ${i===a?'on':''}">${x}</span>`).join('')}</div>`;
+    case 'timer': return `<div class="timer">${a}</div>`;
+    case 'steps': return `<div class="steps">${Array.from({length:a},(_,i)=>`<span class="${i<=c?'on':''}"></span>`).join('')}</div>`;
+    case 'note': return `<div class="note">✎ ${a}</div>`;
+    case 'sp': return `<div class="sp"></div>`;
+    case 'ring': return `<div class="ring">${a}</div>`;
+    case 'callbtns': return `<div class="callbtns"><span></span><span class="g"></span></div>`;
+    case 'recbtn': return `<div style="width:54px;height:54px;border-radius:50%;border:4px solid #fff;background:#e5484d;margin:0 auto"></div>`;
+    case 'split': return `<div class="grid" style="grid-template-columns:1fr 1fr">${Array.from({length:a},(_,i)=>`<div class="b media" style="height:90px">Finalist ${i+1}</div>`).join('')}</div>`;
+    case 'chat': return `<div style="display:flex;flex-direction:column;gap:5px">${lines(3)}</div><div style="display:flex;gap:6px"><div class="b" style="flex:1;height:30px;justify-content:flex-start;padding-left:10px">Say something…</div><div class="b" style="width:30px;height:30px">❤️</div></div>`;
+    case 'stagelist': return `<div style="display:flex;flex-direction:column;gap:6px">${a.map((x,i)=>`<div style="display:flex;gap:8px;align-items:center;font-size:10px;font-weight:${i===c?800:500};color:${i<c?'var(--mute)':'var(--ink)'}"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:${i<c?'var(--ink)':i===c?'var(--accent)':'transparent'}"></span>${x}${i===c?' — NOW':''}</div>`).join('')}</div>`;
+    case 'podium': return `<div style="display:flex;gap:5px;align-items:flex-end;height:90px">${[60,85,45].map(h=>`<div class="b" style="flex:1;height:${h}px">🔒</div>`).join('')}</div>`;
+    case 'center-av': return `<div class="av" style="width:70px;height:70px;margin:8px auto 0"></div>`;
+    case 'stats': return `<div class="row" style="justify-content:space-around">${['Votes','Rounds','Entries'].map(x=>`<div style="text-align:center"><div class="ln" style="width:30px;margin:0 auto 4px"></div><span style="font-size:9px;color:var(--mute)">${x}</span></div>`).join('')}</div>`;
+    case 'check': return `<div style="display:flex;flex-direction:column;gap:6px">${a.map((x,i)=>`<div style="display:flex;gap:8px;align-items:center;font-size:11px"><span style="width:14px;height:14px;border-radius:4px;border:1.5px solid var(--ink);background:${c.includes(i)?'var(--ink)':'transparent'}"></span>${x}</div>`).join('')}</div>`;
+    case 'bars': return ['Votes','Performance'].map((x,i)=>`<div style="font-size:9px;color:var(--mute)">${x}<div style="height:8px;border-radius:4px;background:var(--block);margin-top:3px"><div style="height:100%;width:${[72,85][i]}%;background:var(--ink);border-radius:4px"></div></div></div>`).join('');
+    case 'sheet': return `<div class="dim"></div><div class="sheet"><div class="ln" style="width:40px;margin:0 auto"></div><div class="hd">Vote for Name</div><div class="row">${['1','5','10','50'].map((x,i)=>`<span class="chip ${i===1?'on':''}">${x} votes</span>`).join('')}</div><div style="font-size:10px;color:var(--mute)">You have 240 votes left</div><div class="btn p">Cast 5 votes</div><div class="btn">Top up</div></div>`;
+  }
+  return '';
+}
+const wf = document.getElementById('wf');
+SECTIONS.forEach(s=>{
+  wf.insertAdjacentHTML('beforeend', `<div class="section-title"><i style="background:${s.color}"></i>${s.title}${s.guess?'<span class="tag">GUESS — brief cut off</span>':''}</div>`);
+  const row = document.createElement('div'); row.className='screens';
+  s.screens.forEach(x=>{
+    row.insertAdjacentHTML('beforeend', `<div class="card" id="s-${x.id}"><div class="id">${x.id}${x.guess?'<span class="tag">GUESS</span>':''}</div><div class="phone ${x.dark?'dark':''}">${x.w.map(block).join('')}</div><div class="t">${x.n}</div><div class="d">${x.d}</div></div>`);
+  });
+  wf.appendChild(row);
+});
+
+/* ---------- nav ---------- */
+function show(v){
+  document.querySelectorAll('.toggle button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('on',el.id===v));
+}
+document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+document.querySelectorAll('[data-go]').forEach(n=>n.onclick=()=>{
+  show('wf');
+  const card = document.getElementById('s-'+n.dataset.go);
+  card.scrollIntoView({behavior:'smooth',block:'center',inline:'center'});
+  card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'),1600);
+});
+</script>
+</body>
+</html>
