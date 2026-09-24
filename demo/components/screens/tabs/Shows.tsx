@@ -1,13 +1,14 @@
 "use client";
 
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "motion/react";
-import { ArrowRight, Bell, BellRing, Eye, Phone, Play } from "lucide-react";
+import { ArrowRight, Bell, BellRing, Eye, Play } from "lucide-react";
 import { useEffect, useState, type PointerEvent } from "react";
-import { CALL_STAGES, CONTESTANTS, FINALISTS, HOST, PEOPLE, SHOWS, type Contestant, type ShowKey } from "@/lib/data";
+import { CONTESTANTS, FINALISTS, HOST, IDEA_SECTORS, PEOPLE, SHOWS, TALENT_CATEGORIES, type Contestant, type ShowKey } from "@/lib/data";
 import { useNav, type Route } from "../../nav";
 import { Avatar, Flag, Media, rise } from "../../ui";
 import { AvatarStack, LIVE_VIEWERS, LiveDot, Roll, SHOW_LIVE, SectionTitle, clock, num, useCountdown, useDrift, useTicker } from "../hub/live";
-import { Page, SHOW_ICON } from "./common";
+import { JOURNEYS } from "../profile/parts";
+import { Page, SHOW_ICON, SHOW_VIDEO } from "./common";
 
 /* ---------------- Shows ---------------- */
 
@@ -15,7 +16,7 @@ export function Shows() {
   return (
     <Page title="Shows">
       <motion.p variants={rise} className="mb-4 text-[14px] text-white/50">
-        Three shows. One winner each. <span className="text-white/80">You decide.</span>
+        Two shows. One winner each. <span className="text-white/80">You decide.</span>
       </motion.p>
       <Stories />
       <LiveNow />
@@ -73,7 +74,7 @@ function Stories() {
                 <Flag country={c.country} size={10} className="!shadow-none" />
               </span>
               {live && (
-                <span className="absolute -bottom-1.5 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-md bg-call px-1.5 py-[1px] text-[8px] font-extrabold tracking-wider ring-2 ring-ink">
+                <span className="absolute -bottom-1.5 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-md bg-talent px-1.5 py-[1px] text-[8px] font-extrabold tracking-wider ring-2 ring-ink">
                   LIVE
                 </span>
               )}
@@ -104,11 +105,11 @@ function LiveNow() {
       whileTap={{ scale: 0.975 }}
       onClick={() => push({ name: "live" })}
       className="relative mt-3 block h-[176px] w-full overflow-hidden rounded-[28px] text-left shadow-[0_30px_60px_-30px_rgba(255,90,31,.55)]"
-      aria-label="Watch The Call Grand Final, live now"
+      aria-label={`Watch the ${SHOWS.talent.name} Grand Final, live now`}
     >
       <Media hue={["#ff5a1f", "#2a0a02"]} video="host" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
-      <div className="absolute inset-0 rounded-[28px] ring-1 ring-inset ring-call/40" />
+      <div className="absolute inset-0 rounded-[28px] ring-1 ring-inset ring-talent/40" />
       {/* sweeping glare */}
       <motion.div
         className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent"
@@ -118,7 +119,7 @@ function LiveNow() {
 
       <div className="absolute inset-y-0 left-0 flex w-[62%] flex-col justify-between p-4">
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 rounded-md bg-call px-2 py-1 text-[10px] font-extrabold tracking-[0.14em] shadow-[0_0_18px_rgba(255,90,31,.7)]">
+          <span className="flex items-center gap-1.5 rounded-md bg-talent px-2 py-1 text-[10px] font-extrabold tracking-[0.14em] shadow-[0_0_18px_rgba(255,90,31,.7)]">
             <LiveDot color="#fff" size={5} /> LIVE NOW
           </span>
           <span className="flex items-center gap-1 rounded-md bg-black/45 px-2 py-1 text-[11px] font-bold backdrop-blur-md">
@@ -127,7 +128,7 @@ function LiveNow() {
           </span>
         </div>
         <div>
-          <div className="font-display text-[10px] font-semibold uppercase tracking-[0.24em] text-call">The Call</div>
+          <div className="font-display text-[10px] font-semibold uppercase tracking-[0.24em] text-talent">{SHOWS.talent.name}</div>
           <div className="mt-1 font-display text-[22px] font-black uppercase leading-[0.95] tracking-tight">
             Grand
             <br />
@@ -167,13 +168,13 @@ function LiveNow() {
 
 /* ---------------- schedule strip ---------------- */
 
-type Slot = { id: string; show: ShowKey; title: string; when?: string; countdown?: number; go: Route; call?: boolean };
+type Slot = { id: string; show: ShowKey; title: string; when?: string; countdown?: number; go: Route };
 
 const SCHEDULE: Slot[] = [
-  { id: "vote2", show: "call", title: "Vote 2 closes", countdown: SHOW_LIVE.call.seconds, go: { name: "hub", show: "call" } },
-  { id: "surprise", show: "call", title: "Surprise call window", when: "Tonight · any minute", go: { name: "incoming" }, call: true },
-  { id: "tasklive", show: "task", title: "The Task goes live", when: "Sun · 6:00 PM WAT", go: { name: "hub", show: "task" } },
-  { id: "pitch", show: "idea", title: "Pitch calls begin", when: "Fri · 10:00 AM WAT", go: { name: "hub", show: "idea" } },
+  { id: "vote2", show: "talent", title: "Vote 2 closes", countdown: SHOW_LIVE.talent.seconds, go: { name: "hub", show: "talent" } },
+  { id: "pitch", show: "idea", title: "Investor pitches go live", when: "Fri · 10:00 AM WAT", go: { name: "hub", show: "idea" } },
+  { id: "final", show: "talent", title: "Next Grand Final on stage", when: "Sat · 8:00 PM WAT", go: { name: "hub", show: "talent" } },
+  { id: "qa", show: "idea", title: "Live Q&A with the panel", when: "Sat · 2:00 PM WAT", go: { name: "hub", show: "idea" } },
 ];
 
 function ComingUp() {
@@ -194,6 +195,7 @@ function ScheduleCard({ s }: { s: Slot }) {
   const [remind, setRemind] = useState(false);
   const left = useCountdown(s.countdown ?? 1);
   const color = SHOWS[s.show].color;
+  const Icon = SHOW_ICON[s.show];
   return (
     <motion.div
       whileTap={{ scale: 0.96 }}
@@ -230,13 +232,7 @@ function ScheduleCard({ s }: { s: Slot }) {
       </div>
       <div className="text-[13px] font-bold leading-tight">{s.title}</div>
       <div className="flex items-center gap-1.5 text-[11px] font-semibold text-white/55">
-        {s.call ? (
-          <motion.span animate={{ rotate: [0, -14, 14, -10, 0] }} transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 1.8 }} style={{ color }}>
-            <Phone size={11} />
-          </motion.span>
-        ) : s.countdown ? (
-          <LiveDot color={color} size={5} />
-        ) : null}
+        {s.countdown ? <LiveDot color={color} size={5} /> : <Icon size={11} style={{ color }} />}
         {s.countdown ? <Roll text={clock(left)} className="font-bold text-white" /> : s.when}
       </div>
     </motion.div>
@@ -245,10 +241,23 @@ function ScheduleCard({ s }: { s: Slot }) {
 
 /* ---------------- show cards: tilt, parallax, live numbers ---------------- */
 
-const CARD: Record<ShowKey, { stat: string; start: number; stages: number; at: number; people: Contestant[]; extra: number }> = {
-  call: { stat: "watching", start: LIVE_VIEWERS, stages: CALL_STAGES.length, at: CALL_STAGES.length - 1, people: FINALISTS, extra: 0 },
-  task: { stat: "attempts", start: 2318, stages: 4, at: 0, people: PEOPLE.filter((p) => p.show === "task"), extra: 2 },
-  idea: { stat: "pitches booked", start: 1204, stages: 7, at: 0, people: PEOPLE.filter((p) => p.show === "idea"), extra: 1201 },
+const CARD: Record<ShowKey, { stat: string; start: number; at: number; people: Contestant[]; extra: number; tags: string[] }> = {
+  talent: {
+    stat: "watching",
+    start: LIVE_VIEWERS,
+    at: JOURNEYS.talent.length - 1,
+    people: FINALISTS,
+    extra: 0,
+    tags: [`${TALENT_CATEGORIES.length} categories`, "1-min showcase", "Live final"],
+  },
+  idea: {
+    stat: "pitches booked",
+    start: 1204,
+    at: 1,
+    people: PEOPLE.filter((p) => p.show === "idea"),
+    extra: 1201,
+    tags: [`${IDEA_SECTORS.length} sectors`, "Investor panel", "Public vote"],
+  },
 };
 
 function ShowCard({ k }: { k: ShowKey }) {
@@ -257,8 +266,9 @@ function ShowCard({ k }: { k: ShowKey }) {
   const meta = CARD[k];
   const Icon = SHOW_ICON[k];
   const drift = useDrift(meta.start, 60, 1500);
-  const ticker = useTicker(meta.start, { min: 0, max: 3, every: k === "task" ? 2200 : 3000 });
-  const live = k === "call" ? drift : ticker;
+  const ticker = useTicker(meta.start, { min: 0, max: 3, every: 3000 });
+  const live = k === "talent" ? drift : ticker;
+  const steps = JOURNEYS[k];
   const left = useCountdown(SHOW_LIVE[k].seconds);
 
   // tilt toward the finger, background slides the other way
@@ -300,10 +310,10 @@ function ShowCard({ k }: { k: ShowKey }) {
       onPointerCancel={rest}
       onClick={() => push({ name: "hub", show: k })}
       style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      className="relative block h-[268px] w-full overflow-hidden rounded-[30px] text-left"
+      className="relative block h-[292px] w-full overflow-hidden rounded-[30px] text-left"
     >
       <motion.div className="absolute -inset-5" style={{ x: bgX, y: bgY }}>
-        <Media hue={[s.color, "#15152a"]} video={`show-${k}`} />
+        <Media hue={[s.color, "#15152a"]} video={SHOW_VIDEO[k]} />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/10" />
       <motion.div className="pointer-events-none absolute inset-0 mix-blend-overlay" style={{ background: sheen, opacity: glow }} />
@@ -313,7 +323,7 @@ function ShowCard({ k }: { k: ShowKey }) {
       <motion.div className="absolute inset-0 flex flex-col justify-between p-5" style={{ x: fgX }}>
         <div className="flex items-start justify-between gap-2">
           <span className="flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[11px] font-bold backdrop-blur-xl">
-            {k === "call" ? <LiveDot color={s.color} /> : <Icon size={12} style={{ color: s.color }} />}
+            {k === "talent" ? <LiveDot color={s.color} /> : <Icon size={12} style={{ color: s.color }} />}
             {s.stage}
           </span>
           <span className="flex flex-col items-end rounded-2xl border border-white/10 bg-black/40 px-2.5 py-1.5 backdrop-blur-xl">
@@ -325,6 +335,16 @@ function ShowCard({ k }: { k: ShowKey }) {
         <div>
           <div className="font-display text-[34px] font-black uppercase leading-none tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,.6)]">{s.name}</div>
           <div className="mt-1.5 line-clamp-1 text-[13px] text-white/75">{s.tagline}</div>
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {meta.tags.map((t) => (
+              <span key={t} className="rounded-full border border-white/10 bg-white/[0.08] px-2 py-0.5 text-[10px] font-bold text-white/80 backdrop-blur-md">
+                {t}
+              </span>
+            ))}
+            <span className="rounded-full px-2 py-0.5 text-[10px] font-extrabold" style={{ background: `${s.color}2e`, color: s.color }}>
+              Stage {meta.at + 1}/{steps.length} · {steps[meta.at].t}
+            </span>
+          </div>
           <div className="mt-3.5 flex items-center justify-between gap-2 rounded-2xl border border-white/10 bg-black/35 p-2 pl-2.5 backdrop-blur-xl">
             <span className="flex min-w-0 items-center gap-2">
               <AvatarStack people={meta.people.slice(0, 3)} size={24} extra={meta.extra || undefined} ring="#101014" />
@@ -347,7 +367,7 @@ function ShowCard({ k }: { k: ShowKey }) {
 
       {/* stage progress along the bottom edge */}
       <div className="absolute inset-x-5 bottom-[7px] flex gap-1">
-        {Array.from({ length: meta.stages }).map((_, i) => (
+        {Array.from({ length: steps.length }).map((_, i) => (
           <motion.span
             key={i}
             className="h-[3px] flex-1 origin-left rounded-full"

@@ -11,7 +11,6 @@ import { Welcome, Signup, Role, Plan, Interests, TalentSetup, FanSetup, BrandSet
 import { Main } from "./screens/Main";
 import { Hub } from "./screens/Hub";
 import { Record } from "./screens/Record";
-import { Incoming } from "./screens/Incoming";
 import { Live } from "./screens/Live";
 import { Profile } from "./screens/Profile";
 import { Search } from "./screens/Search";
@@ -49,7 +48,6 @@ const ANIM: Record<Route["name"], Anim> = {
   main: FADE,
   hub: SLIDE,
   record: UP,
-  incoming: FADE,
   live: UP,
   profile: SLIDE,
   search: FADE,
@@ -85,9 +83,7 @@ function render(r: StackItem) {
     case "hub":
       return <Hub show={r.show} />;
     case "record":
-      return <Record task={r.task} />;
-    case "incoming":
-      return <Incoming />;
+      return <Record brief={r.brief} />;
     case "live":
       return <Live />;
     case "profile":

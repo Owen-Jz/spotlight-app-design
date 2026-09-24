@@ -53,7 +53,7 @@ export function MeFan() {
         <StatTile
           value={
             <span className="inline-flex items-center gap-1">
-              <Flame size={16} className="text-call" fill="#ff5a1f" />
+              <Flame size={16} className="text-talent" fill="#ff5a1f" />
               {streak}
             </span>
           }

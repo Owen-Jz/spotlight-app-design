@@ -9,11 +9,11 @@ import { Avatar, Flag, Media, glass } from "../ui";
 
 // label shown -> what it actually searches for (every one returns results)
 const TRENDING: [label: string, q: string][] = [
-  ["#TheCallFinal", "The Call"],
+  ["#SpotlightTalent", "Talent"],
   ["Tolu vocals", "Tolu"],
   ["Kenya's rising stars", "Kenya"],
   ["Agritech pitch", "Agriculture"],
-  ["#SpotlightTask", "Speed challenge"],
+  ["#SpotlightIdeas", "Ideas"],
 ];
 const CAT_CLIP = ["rafa", "tolu", "amara", "tunde", "zawadi", "adaeze"];
 const RISING = [...CONTESTANTS].sort((a, b) => b.votes - a.votes).slice(0, 8);
@@ -35,7 +35,7 @@ export function Search() {
         <motion.button whileTap={{ scale: 0.9 }} onClick={pop} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl" aria-label="Back">
           <ChevronLeft size={22} />
         </motion.button>
-        <div className="flex flex-1 items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 focus-within:border-call">
+        <div className="flex flex-1 items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 focus-within:border-talent">
           <SearchIcon size={17} className="text-white/40" />
           <input
             autoFocus
@@ -87,7 +87,7 @@ export function Search() {
                     className="flex w-full items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors hover:bg-white/5 active:bg-white/5"
                   >
                     <span className="w-4 font-display text-[12px] font-bold text-white/30">{i + 1}</span>
-                    <TrendingUp size={15} className="text-call" />
+                    <TrendingUp size={15} className="text-talent" />
                     <span className="flex-1 text-[14px] font-semibold">{t}</span>
                     <span className="text-[11px] text-white/30">{fmt(PEOPLE.filter((p) => matches(p, query.toLowerCase())).reduce((a, p) => a + p.votes, 0))} votes</span>
                   </motion.button>
@@ -123,7 +123,7 @@ export function Search() {
               </div>
               {results.length === 0 && (
                 <div className="py-16 text-center">
-                  <div className="font-display text-[16px] font-bold">No one called &ldquo;{q}&rdquo; yet</div>
+                  <div className="font-display text-[16px] font-bold">No one named &ldquo;{q}&rdquo; yet</div>
                   <p className="mt-2 text-[13px] text-white/50">Try a name, a category like &ldquo;Dance&rdquo;, or a country.</p>
                   {IDEA_SECTORS.some((s) => s.toLowerCase() === term) && (
                     <motion.button whileTap={{ scale: 0.95 }} onClick={() => push({ name: "hub", show: "idea" })} className="mt-5 rounded-full bg-idea px-4 py-2.5 text-[13px] font-extrabold text-ink">
@@ -160,7 +160,7 @@ export function Search() {
                           toggleFollow(p.id);
                           toast(on ? `Unfollowed ${p.name.split(" ")[0]}` : `Following ${p.name.split(" ")[0]}`);
                         }}
-                        className={`shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-extrabold transition-colors ${on ? "bg-white/10 text-white" : "bg-call text-white"}`}
+                        className={`shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-extrabold transition-colors ${on ? "bg-white/10 text-white" : "bg-talent text-white"}`}
                       >
                         {on ? "Following" : "Follow"}
                       </motion.button>

@@ -86,9 +86,11 @@ export function Celebrate() {
     user.role === "talent"
       ? [
           draft.recordNow
-            ? { icon: Video, t: "Record your intro", d: "60 seconds to sell yourself. Do it now.", go: { name: "record" } }
-            : { icon: Video, t: "Record your intro", d: "Whenever you're ready. We'll remind you.", go: { name: "record" } },
-          { icon: Zap, t: "Enter a show", d: draft.shows.includes("task") ? "A Task is open. 3 spots left." : "The Call is taking entries.", go: { name: "hub", show: draft.shows.includes("task") ? "task" : "call" } },
+            ? { icon: Video, t: "Record your showcase", d: "60 seconds to sell yourself. Do it now.", go: { name: "record" } }
+            : { icon: Video, t: "Record your showcase", d: "Whenever you're ready. We'll remind you.", go: { name: "record" } },
+          draft.shows.includes("idea") && !draft.shows.includes("talent")
+            ? { icon: Lightbulb, t: "Enter Ideas", d: "Pitches are open. Record yours for the panel.", go: { name: "hub", show: "idea" } }
+            : { icon: Zap, t: "Enter Talent", d: "Showcases are open. The shortlist drops Friday.", go: { name: "hub", show: "talent" } },
           { icon: UserPen, t: "Complete your profile", d: "Photo, links and socials.", go: { name: "settings" } },
         ]
       : user.role === "fan"
@@ -99,8 +101,8 @@ export function Celebrate() {
           ]
         : [
             { icon: Bookmark, t: "Build your shortlist", d: "Save acts and pitches you like.", go: { name: "search" } },
-            { icon: TrendingUp, t: "Browse trending talent", d: "Who the crowd is backing this week.", go: { name: "hub", show: "call" } },
-            { icon: Lightbulb, t: "Review pitches", d: "New founders on The Idea.", go: { name: "hub", show: "idea" } },
+            { icon: TrendingUp, t: "Browse trending talent", d: "Who the crowd is backing this week.", go: { name: "hub", show: "talent" } },
+            { icon: Lightbulb, t: "Review pitches", d: "New founders pitching on Ideas.", go: { name: "hub", show: "idea" } },
           ];
 
   const enter = (s?: NextStep) => {
@@ -124,7 +126,7 @@ export function Celebrate() {
       <div className="pointer-events-none absolute inset-0">
         {[
           { c: "#ff5a1f", cls: "-left-24 top-[6%] h-80 w-80", d: 11, x: 30, y: 40 },
-          { c: "#4c7dff", cls: "-right-28 top-[30%] h-72 w-72", d: 13, x: -30, y: -30 },
+          { c: "#ff2e7a", cls: "-right-28 top-[30%] h-72 w-72", d: 13, x: -30, y: -30 },
           { c: "#f2b53a", cls: "-bottom-24 left-[10%] h-80 w-80", d: 15, x: 40, y: -20 },
         ].map((o, i) => (
           <motion.div key={i} className={`absolute ${o.cls}`} initial={{ opacity: 0, scale: 0.6 }} animate={phase >= 1 ? { opacity: 0.32, scale: 1 } : {}} transition={{ duration: 1.6, delay: i * 0.12 }}>
@@ -214,7 +216,7 @@ export function Celebrate() {
           animate={focus(phase >= 1)}
           transition={{ duration: 0.6 }}
         >
-          Welcome to 3<span className="text-call">1</span>6
+          Welcome to 3<span className="text-talent">1</span>6
         </motion.div>
         <h1 className="mt-2 flex max-w-full flex-wrap justify-center font-display text-[44px] font-black leading-none tracking-tight" aria-label={first}>
           {letters.map((ch, i) => (
@@ -227,7 +229,7 @@ export function Celebrate() {
               {ch}
             </motion.span>
           ))}
-          <motion.span className="text-call" initial={{ opacity: 0, scale: 0 }} animate={phase >= 2 ? { opacity: 1, scale: 1 } : {}} transition={{ type: "spring", stiffness: 500, damping: 14, delay: letters.length * 0.045 + 0.1 }}>
+          <motion.span className="text-talent" initial={{ opacity: 0, scale: 0 }} animate={phase >= 2 ? { opacity: 1, scale: 1 } : {}} transition={{ type: "spring", stiffness: 500, damping: 14, delay: letters.length * 0.045 + 0.1 }}>
             .
           </motion.span>
         </h1>
@@ -254,7 +256,7 @@ export function Celebrate() {
             transition={{ type: "spring", stiffness: 160, damping: 17, delay: 0.15 }}
           >
             <div className="relative flex items-center gap-3 overflow-hidden rounded-[22.5px] bg-[#140b08] p-4">
-              <span className="pointer-events-none absolute -left-8 -top-10 h-28 w-28 rounded-full bg-call/35 blur-2xl" />
+              <span className="pointer-events-none absolute -left-8 -top-10 h-28 w-28 rounded-full bg-talent/35 blur-2xl" />
               <motion.span
                 className="pointer-events-none absolute -bottom-1/2 -top-1/2 w-12 rotate-[18deg] bg-gradient-to-r from-transparent via-white/20 to-transparent"
                 initial={{ x: -100 }}
@@ -262,7 +264,7 @@ export function Celebrate() {
                 transition={{ duration: 1.2, delay: 0.6, repeat: Infinity, repeatDelay: 3 }}
               />
               <motion.div
-                className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-idea to-call shadow-[0_10px_24px_-8px_#ff5a1f]"
+                className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-idea to-talent shadow-[0_10px_24px_-8px_#ff5a1f]"
                 animate={phase >= 3 ? { rotate: [0, -14, 12, -6, 0] } : {}}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >

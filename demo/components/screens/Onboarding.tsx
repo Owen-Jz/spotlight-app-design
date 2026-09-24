@@ -1,9 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { Briefcase, Check, ChevronDown, Heart, Lightbulb, Mic, Phone, Timer } from "lucide-react";
+import { Briefcase, Check, ChevronDown, Heart, Lightbulb, Mic, Trophy } from "lucide-react";
 import { useRef, useState } from "react";
-import { CONTESTANTS, DAILY_FREE_VOTES, IDEA_SECTORS, TALENT_CATEGORIES } from "@/lib/data";
+import { CONTESTANTS, DAILY_FREE_VOTES, IDEA_SECTORS, SHOWS, TALENT_CATEGORIES } from "@/lib/data";
 import { Logo } from "../brand/Logo";
 import { useNav, type Role as RoleKey, type User } from "../nav";
 import { Avatar, Button, Flag, Pulse, rise, stagger } from "../ui";
@@ -17,30 +17,32 @@ export { Celebrate, TalentSetup, FanSetup, BrandSetup };
 
 const SLIDES = [
   {
-    show: "The Call",
-    color: "#ff5a1f",
-    title: "Show your talent.\nGet the call.",
-    body: "Sell yourself in one minute. If you're picked, Spotlight calls you with a task, live, and the crowd votes.",
-    art: "call",
+    show: SHOWS.talent.name,
+    color: SHOWS.talent.color,
+    title: "Show your talent.\nWin the crowd.",
+    body: "Post a one-minute showcase. Get shortlisted, win the public vote round by round, and take the Grand Final stage.",
+    art: "talent",
   },
   {
-    show: "The Task",
-    color: "#4c7dff",
-    title: "Be fast.\nBe first.",
-    body: "A task drops. The first 10 people to complete it are in. Then the votes decide who survives.",
-    art: "task",
-  },
-  {
-    show: "The Idea",
-    color: "#f2b53a",
+    show: SHOWS.idea.name,
+    color: SHOWS.idea.color,
     title: "Pitch it.\nGet backed.",
-    body: "Buy airtime, pitch your business, face the investors, and let the public vote you to the top.",
+    body: "Record your pitch, face the investor panel across 13 sectors, and let the public vote you to the top.",
     art: "idea",
+  },
+  {
+    show: "The Grand Final",
+    color: "#ff2e7a",
+    title: "Vote free.\nWatch it live.",
+    body: `${DAILY_FREE_VOTES} free votes every day. Back your favourites through every round, then watch the winner crowned live on stage.`,
+    art: "final",
   },
 ] as const;
 
-function SlideArt({ art, color }: { art: string; color: string }) {
-  const Icon = art === "call" ? Phone : art === "task" ? Timer : Lightbulb;
+type Art = (typeof SLIDES)[number]["art"];
+
+function SlideArt({ art, color }: { art: Art; color: string }) {
+  const Icon = art === "talent" ? Mic : art === "idea" ? Lightbulb : Trophy;
   const chip = "absolute rounded-2xl border border-white/10 bg-white/[0.07] px-3 py-2 text-xs font-bold shadow-[0_20px_40px_-20px_rgba(0,0,0,.8)] backdrop-blur-xl";
   return (
     <div className="relative flex h-full w-full items-center justify-center">
@@ -51,7 +53,45 @@ function SlideArt({ art, color }: { art: string; color: string }) {
         animate={{ opacity: [0.28, 0.42, 0.28], scale: [0.95, 1.05, 0.95] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
-      <Pulse color={color} size={150} duration={3.2} />
+
+      {art === "talent" ? (
+        <>
+          {/* a stage spotlight swaying down onto the mic */}
+          <motion.div
+            className="pointer-events-none absolute left-1/2 top-0 h-[78%] w-[260px] origin-top -translate-x-1/2"
+            style={{
+              background: `linear-gradient(180deg, color-mix(in srgb, ${color} 55%, #fff) 0%, ${color}55 45%, transparent 100%)`,
+              clipPath: "polygon(44% 0, 56% 0, 100% 100%, 0 100%)",
+              filter: "blur(10px)",
+            }}
+            animate={{ rotate: [-7, 7, -7], opacity: [0.45, 0.65, 0.45] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* the pool of light on the stage floor */}
+          <motion.div
+            className="absolute bottom-[14%] h-10 w-56 rounded-[50%] blur-md"
+            style={{ background: `radial-gradient(ellipse at center, ${color}aa, transparent 70%)` }}
+            animate={{ scaleX: [0.9, 1.08, 0.9], opacity: [0.6, 0.9, 0.6] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* sound bars either side of the mic */}
+          {[-1, 1].map((side) => (
+            <div key={side} className="absolute flex items-center gap-1.5" style={side < 0 ? { right: "calc(50% + 84px)" } : { left: "calc(50% + 84px)" }}>
+              {[0, 1, 2].map((b) => (
+                <motion.span
+                  key={b}
+                  className="w-1.5 rounded-full"
+                  style={{ background: color, order: side < 0 ? 2 - b : b }}
+                  animate={{ height: [10, 30 - b * 7, 10], opacity: [0.35, 0.9, 0.35] }}
+                  transition={{ duration: 1.1 + b * 0.2, repeat: Infinity, ease: "easeInOut", delay: b * 0.15 }}
+                />
+              ))}
+            </div>
+          ))}
+        </>
+      ) : (
+        <Pulse color={color} size={150} duration={3.2} />
+      )}
 
       {/* orbit with a travelling dot */}
       <div className="absolute h-[250px] w-[250px] rounded-full border border-white/[0.07]" />
@@ -75,15 +115,10 @@ function SlideArt({ art, color }: { art: string; color: string }) {
           animate={{ x: [-120, 160] }}
           transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 3.2, ease: "easeInOut" }}
         />
-        <Icon size={54} strokeWidth={1.7} style={{ color }} fill={art === "call" ? color : "none"} className="relative drop-shadow-[0_4px_10px_rgba(0,0,0,.5)]" />
+        <Icon size={54} strokeWidth={1.7} style={{ color }} className="relative drop-shadow-[0_4px_10px_rgba(0,0,0,.5)]" />
       </motion.div>
 
-      {art === "task" && (
-        <motion.div className={`${chip} bottom-[16%] right-[12%] font-display text-lg font-black`} animate={{ y: [0, -6, 0] }} transition={{ duration: 3.4, repeat: Infinity }}>
-          7<span className="text-white/40">/10</span>
-        </motion.div>
-      )}
-      {art === "call" && (
+      {art === "talent" && (
         <motion.div className={`${chip} left-[10%] top-[20%]`} animate={{ y: [0, -6, 0] }} transition={{ duration: 3, repeat: Infinity }}>
           ❤️ 18.4k votes
         </motion.div>
@@ -92,6 +127,17 @@ function SlideArt({ art, color }: { art: string; color: string }) {
         <motion.div className={`${chip} bottom-[18%] left-[10%]`} animate={{ y: [0, -6, 0] }} transition={{ duration: 3, repeat: Infinity }}>
           💼 3 investors interested
         </motion.div>
+      )}
+      {art === "final" && (
+        <>
+          <motion.div className={`${chip} right-[10%] top-[18%] flex items-center gap-1.5`} animate={{ y: [0, -6, 0] }} transition={{ duration: 3, repeat: Infinity }}>
+            <motion.span className="h-1.5 w-1.5 rounded-full bg-[#ff2e7a]" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
+            LIVE · 4 finalists
+          </motion.div>
+          <motion.div className={`${chip} bottom-[16%] left-[10%]`} animate={{ y: [0, -6, 0] }} transition={{ duration: 3.4, repeat: Infinity, delay: 0.4 }}>
+            🗳️ {DAILY_FREE_VOTES} free votes today
+          </motion.div>
+        </>
       )}
     </div>
   );
@@ -157,8 +203,8 @@ export function Welcome() {
             />
           ))}
         </div>
-        <Button color={s.color} onClick={() => (i < 2 ? go(i + 1) : push({ name: "role" }))}>
-          {i < 2 ? "Next" : "Get started"}
+        <Button color={s.color} onClick={() => (i < SLIDES.length - 1 ? go(i + 1) : push({ name: "role" }))}>
+          {i < SLIDES.length - 1 ? "Next" : "Get started"}
         </Button>
         <button
           onClick={() => {
@@ -177,7 +223,7 @@ export function Welcome() {
 /* ---------------- Role (step 1) ---------------- */
 
 const ROLES: { k: RoleKey; icon: typeof Mic; t: string; d: string; faces: string[] }[] = [
-  { k: "talent", icon: Mic, t: "Talent", d: "Compete in The Call, The Task or The Idea and get discovered.", faces: ["c1", "c2", "c3"] },
+  { k: "talent", icon: Mic, t: "Talent", d: "Perform in Talent or pitch in Ideas, win the public vote and get discovered.", faces: ["c1", "c2", "c3"] },
   { k: "fan", icon: Heart, t: "Fan", d: `Watch every show and vote free, ${DAILY_FREE_VOTES} times a day.`, faces: ["c4", "c9", "c7"] },
   { k: "brand", icon: Briefcase, t: "Scout · Brand · Investor", d: "Labels, agencies, brands and investors: find talent, back ideas.", faces: ["c6", "c8", "c10"] },
 ];
@@ -315,7 +361,7 @@ export function Signup() {
         {/* phone with a real-flag country picker */}
         <motion.div variants={rise}>
           <span className="text-xs font-bold uppercase tracking-wider text-white/40">Phone number</span>
-          <div className="mt-2 flex items-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition-colors focus-within:border-call">
+          <div className="mt-2 flex items-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition-colors focus-within:border-talent">
             <button onClick={() => setPicking((p) => !p)} className="flex shrink-0 items-center gap-2 border-r border-white/10 py-4 pl-4 pr-3" aria-label="Choose country">
               <Flag country={country.name} size={14} />
               <span className="text-[15px] font-semibold tabular-nums text-white/80">{country.dial}</span>
@@ -359,7 +405,7 @@ export function Signup() {
             )}
           </AnimatePresence>
           <div className="mt-2 text-[11.5px] text-white/35">
-            We&apos;ll text you a code. {user.role === "talent" ? "It's also the number Spotlight calls when you're picked." : "No spam, ever."}
+            We&apos;ll text you a code. {user.role === "talent" ? "We'll also text you when you're shortlisted and when voting opens." : "No spam, ever."}
           </div>
         </motion.div>
 
@@ -391,14 +437,14 @@ type PlanOption = { k: User["plan"]; t: string; p: string; f: string[]; hot?: bo
 const PLANS: Record<RoleKey, { title: string; sub: string; options: PlanOption[] }> = {
   talent: {
     title: "Pick your plan",
-    sub: "Enter The Call free. Go Pro when you want the spotlight.",
+    sub: "Enter Talent free. Go Pro when you want the spotlight.",
     options: [
-      { k: "free", t: "Starter", p: "Free", f: ["Enter The Call with your 1-minute intro", `${DAILY_FREE_VOTES} free votes every day`, "Watch every show, live"] },
+      { k: "free", t: "Starter", p: "Free", f: ["Enter Talent with your 1-minute showcase", `${DAILY_FREE_VOTES} free votes every day`, "Watch every show, live"] },
       {
         k: "talent",
         t: "Talent Pro",
         p: "₦3,000",
-        f: ["Enter The Call, The Task & The Idea", "Profile boost in Discover", "See who votes for you, by city", "Discounted airtime on The Idea"],
+        f: ["Enter both Talent & Ideas", "Profile boost in Discover", "See who votes for you, by city", "Discounted pitch slots on Ideas"],
         hot: true,
       },
     ],

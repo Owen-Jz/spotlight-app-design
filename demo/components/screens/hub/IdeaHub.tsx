@@ -10,14 +10,14 @@ import {
   HardHat,
   HeartPulse,
   MessageCircleQuestion,
-  Phone,
-  PhoneCall,
+  Lightbulb,
   Plane,
   Shirt,
   Ship,
   Sparkles,
   Sprout,
   Ticket,
+  Video,
   Trophy,
   Users,
   UtensilsCrossed,
@@ -52,7 +52,7 @@ const SECTOR_ICON: Record<string, LucideIcon> = {
   Technology: Cpu,
 };
 
-const AIRTIME = [
+const SLOTS = [
   { m: 1, p: 5000, note: "Elevator pitch" },
   { m: 3, p: 12000, note: "Most founders pick", hot: true },
   { m: 5, p: 18000, note: "Full story + demo" },
@@ -68,10 +68,10 @@ export const INVESTORS = [
 ];
 
 const STEPS: { t: string; d: string; icon: LucideIcon }[] = [
-  { t: "Buy airtime", d: "Pick 1, 3 or 5 minutes", icon: Wallet },
-  { t: "Pitch call", d: "Spotlight calls you. The clock starts.", icon: PhoneCall },
+  { t: "Book a pitch slot", d: "Pick 1, 3 or 5 minutes", icon: Wallet },
+  { t: "Pitch live", d: "You go live to the panel. The clock starts.", icon: Video },
   { t: "Selection", d: "The best pitches go through", icon: Sparkles },
-  { t: "Q&A + clarification call", d: "Investors ask, you answer", icon: MessageCircleQuestion },
+  { t: "Live Q&A with the panel", d: "Investors ask, you answer", icon: MessageCircleQuestion },
   { t: "Meet the investors", d: "Face to face with the panel", icon: Handshake },
   { t: "Public vote", d: "Africa picks its favourite", icon: Vote },
   { t: "Final announcement", d: "One idea gets backed", icon: Megaphone },
@@ -83,13 +83,13 @@ export function IdeaHub() {
   const [pack, setPack] = useState(3);
   const [phase, setPhase] = useState<"pick" | "confirm" | "booked">("pick");
   const booked = phase === "booked";
-  const price = AIRTIME.find((a) => a.m === pack)?.p ?? 0;
+  const price = SLOTS.find((a) => a.m === pack)?.p ?? 0;
   const ref = `SPT-${sector.slice(0, 3).toUpperCase()}-${pack}${(sector.length * 37 + pack * 11) % 900 + 100}`;
 
   const confirm = () => {
     setPhase("booked");
     toast(`Pitch booked · ${pack} min · ${sector} 💼`);
-    addAlert({ kind: "call", title: "Your pitch call is booked", body: `${pack}-minute ${sector} pitch. Spotlight will call you on Friday.`, go: { name: "hub", show: "idea" } });
+    addAlert({ kind: "result", title: "Your pitch slot is booked", body: `${pack}-minute ${sector} pitch. You go live to the panel on Friday.`, go: { name: "hub", show: "idea" } });
   };
 
   return (
@@ -119,9 +119,9 @@ export function IdeaHub() {
         })}
       </div>
 
-      <SectionTitle>2 · Buy pitch airtime</SectionTitle>
+      <SectionTitle>2 · Book a pitch slot</SectionTitle>
       <div className="grid grid-cols-3 gap-2">
-        {AIRTIME.map((a) => {
+        {SLOTS.map((a) => {
           const on = pack === a.m;
           return (
             <motion.button
@@ -154,7 +154,7 @@ export function IdeaHub() {
           {phase === "pick" && (
             <motion.div key="pick" exit={{ opacity: 0, y: -8 }}>
               <Button color="#d8961a" onClick={() => setPhase("confirm")}>
-                <Phone size={16} /> Book my {pack}-minute pitch · {naira(price)}
+                <Lightbulb size={16} /> Book my {pack}-minute pitch · {naira(price)}
               </Button>
             </motion.div>
           )}
@@ -170,8 +170,8 @@ export function IdeaHub() {
               <div className="mt-3 space-y-2 text-[13px]">
                 {[
                   ["Sector", sector],
-                  ["Airtime", `${pack} minute${pack > 1 ? "s" : ""}`],
-                  ["Pitch call", "Friday · 10 AM–4 PM WAT"],
+                  ["Slot", `${pack} minute${pack > 1 ? "s" : ""}`],
+                  ["Pitch live", "Friday · 10 AM–4 PM WAT"],
                   ["Total", naira(price)],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between border-b border-white/[0.06] pb-2 last:border-0 last:pb-0">
@@ -218,9 +218,9 @@ export function IdeaHub() {
               <div className="mt-3 font-display text-[22px] font-black leading-tight">
                 {pack}-min {sector} pitch
               </div>
-              <div className="mt-1 text-[13px] font-semibold opacity-75">Spotlight will call you Friday, 10 AM–4 PM WAT. Keep your phone close.</div>
+              <div className="mt-1 text-[13px] font-semibold opacity-75">You pitch live to the panel on Friday, 10 AM–4 PM WAT. Your stage link lands in your inbox.</div>
               <div className="mt-4 border-t border-dashed border-ink/25 pt-3 text-[12px] font-bold">
-                Paid {naira(price)} · we&apos;ll remind you before the call
+                Paid {naira(price)} · we&apos;ll remind you before you go live
               </div>
             </motion.div>
           )}

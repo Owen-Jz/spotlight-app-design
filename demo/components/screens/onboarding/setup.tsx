@@ -14,12 +14,10 @@ import {
   Laugh,
   Lightbulb,
   MicVocal,
-  Phone,
   Plus,
   Check,
   Sparkles,
   Store,
-  Timer,
   Users,
   Video,
 } from "lucide-react";
@@ -42,10 +40,9 @@ const CATEGORY_ART: Record<string, { icon: Icon; color: string; slug: string }> 
   "Special Talents": { icon: Sparkles, color: "#f2b53a", slug: "adaeze" },
 };
 
-const SHOW_ICON: Record<ShowKey, Icon> = { call: Phone, task: Timer, idea: Lightbulb };
+const SHOW_ICON: Record<ShowKey, Icon> = { talent: Sparkles, idea: Lightbulb };
 const SHOW_LINE: Record<ShowKey, string> = {
-  call: "1-minute intro · get the call · win the vote",
-  task: "Race a live task · first 10 qualify",
+  talent: "1-minute showcase · public vote · live Grand Final",
   idea: "Pitch your business to investors",
 };
 
@@ -59,7 +56,7 @@ export function TalentSetup() {
   const [now, setNow] = useState(draft.recordNow);
 
   const done = () => {
-    draft.shows = shows.length ? shows : ["call"];
+    draft.shows = shows.length ? shows : ["talent"];
     draft.recordNow = now;
     setUser({ talent: cat, stageName: stage.trim().replace(/^@/, "") || undefined, bio: bio.trim() || undefined });
     next("talentSetup");
@@ -121,7 +118,7 @@ export function TalentSetup() {
             rows={2}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Lagos-born vocalist. Church choir to your screen."
-            className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-[15px] font-medium leading-snug outline-none transition-colors placeholder:text-white/25 focus:border-call"
+            className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-[15px] font-medium leading-snug outline-none transition-colors placeholder:text-white/25 focus:border-talent"
           />
         </motion.label>
       </motion.div>
@@ -178,7 +175,7 @@ export function TalentSetup() {
                 className="relative rounded-2xl border p-4 text-left transition-colors"
                 style={{ borderColor: on ? "#ff5a1f" : "rgba(255,255,255,.08)", background: on ? "#ff5a1f14" : "rgba(255,255,255,.03)" }}
               >
-                <o.icon size={20} className={on ? "text-call" : "text-white/50"} />
+                <o.icon size={20} className={on ? "text-talent" : "text-white/50"} />
                 <div className="mt-3 font-display text-[14px] font-bold">{o.t}</div>
                 <div className="mt-1 text-[12px] leading-snug text-white/45">{o.d}</div>
                 <div className="absolute right-3 top-3">
@@ -199,14 +196,14 @@ export function TalentSetup() {
 export function FreeVotesBanner({ compact }: { compact?: boolean }) {
   return (
     <motion.div variants={rise} className={`relative overflow-hidden rounded-3xl ${glass} ${compact ? "p-3.5" : "p-4"}`}>
-      <span className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-call/30 blur-2xl" />
+      <span className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-talent/30 blur-2xl" />
       <motion.span
         className="pointer-events-none absolute -bottom-1/2 -top-1/2 w-10 rotate-[18deg] bg-gradient-to-r from-transparent via-white/15 to-transparent"
         animate={{ x: [-80, 420] }}
         transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
       />
       <div className="relative flex items-center gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-idea to-call shadow-[0_8px_20px_-8px_#ff5a1f]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-idea to-talent shadow-[0_8px_20px_-8px_#ff5a1f]">
           <Gift size={21} />
         </div>
         <div className="flex-1">
@@ -221,7 +218,7 @@ export function FreeVotesBanner({ compact }: { compact?: boolean }) {
   );
 }
 
-const FAN_CATEGORIES = [...TALENT_CATEGORIES, "Speed challenges", "Business pitches"];
+const FAN_CATEGORIES = [...TALENT_CATEGORIES, "Business pitches", "Live finals"];
 
 export function FanSetup() {
   const { following, toggleFollow, setUser, user } = useNav();

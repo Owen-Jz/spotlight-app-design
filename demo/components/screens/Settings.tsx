@@ -11,7 +11,7 @@ type Credit = { file: string; title: string; creator: string; license: string; s
 
 function Toggle({ on, set }: { on: boolean; set: (v: boolean) => void }) {
   return (
-    <button onClick={() => set(!on)} className={`relative h-7 w-12 rounded-full transition-colors ${on ? "bg-call" : "bg-white/15"}`} aria-pressed={on}>
+    <button onClick={() => set(!on)} className={`relative h-7 w-12 rounded-full transition-colors ${on ? "bg-talent" : "bg-white/15"}`} aria-pressed={on}>
       <motion.span layout transition={{ type: "spring", stiffness: 500, damping: 32 }} className={`absolute top-1 h-5 w-5 rounded-full bg-white ${on ? "right-1" : "left-1"}`} />
     </button>
   );
@@ -30,7 +30,7 @@ export function Settings() {
   const favourite = topId ? findPerson(topId) : CONTESTANTS[0];
   const [confirmOut, setConfirmOut] = useState(false);
   const [name, setName] = useState(user.name);
-  const [notif, setNotif] = useState({ calls: true, live: true, votes: true, marketing: false });
+  const [notif, setNotif] = useState({ shortlist: true, live: true, votes: true, marketing: false });
   const [credits, setCredits] = useState<Credit[]>([]);
   const [showCredits, setShowCredits] = useState(false);
 
@@ -60,7 +60,7 @@ export function Settings() {
               onChange={(e) => setName(e.target.value)}
               onBlur={saveName}
               onKeyDown={(e) => e.key === "Enter" && (e.currentTarget.blur(), saveName())}
-              className="mt-2 w-full rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3 text-[16px] outline-none focus:border-call"
+              className="mt-2 w-full rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3 text-[16px] outline-none focus:border-talent"
             />
             <div className="mt-2 text-[12px] text-white/40">Shown as {user.handle}</div>
           </div>
@@ -76,7 +76,7 @@ export function Settings() {
             <div className="flex items-end justify-between">
               <div>
                 <div className="flex items-center gap-1.5 text-[12px] font-bold text-white/50">
-                  <Gift size={14} className="text-call" /> Free votes today
+                  <Gift size={14} className="text-talent" /> Free votes today
                 </div>
                 <div className="mt-1 font-display text-[28px] font-extrabold leading-none">
                   {freeVotes}
@@ -103,7 +103,7 @@ export function Settings() {
             </div>
             <ul className="mt-4 space-y-2 text-[13px] leading-snug text-white/60">
               <li className="flex gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-call" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-talent" />
                 Everyone gets {DAILY_FREE_VOTES} free votes a day. They refill at midnight and don&apos;t roll over, so use them.
               </li>
               <li className="flex gap-2.5">
@@ -149,7 +149,7 @@ export function Settings() {
         <Section title="Notifications">
           {(
             [
-              ["calls", "When Spotlight calls you"],
+              ["shortlist", "When you're shortlisted"],
               ["live", "Live shows starting"],
               ["votes", "Voting deadlines"],
               ["marketing", "News and offers"],
@@ -160,7 +160,6 @@ export function Settings() {
                 on={notif[k]}
                 set={(v) => {
                   setNotif((n) => ({ ...n, [k]: v }));
-                  if (k === "calls" && !v) toast("Heads up: you could miss The Call");
                 }}
               />
             </Row>

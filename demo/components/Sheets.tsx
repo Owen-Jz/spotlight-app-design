@@ -205,7 +205,7 @@ function CommentsBody({ c }: { c: Contestant }) {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[12px] font-bold text-white/50">
-                    {m.user} {m.mine && <span className="text-call">· you</span>}
+                    {m.user} {m.mine && <span className="text-talent">· you</span>}
                   </div>
                   <div className="mt-0.5 text-[14px] leading-snug">{m.text}</div>
                 </div>
@@ -230,13 +230,13 @@ function CommentsBody({ c }: { c: Contestant }) {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder={`Hype up ${c.name.split(" ")[0]}…`}
-          className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/[0.05] px-4 py-3 text-[16px] outline-none placeholder:text-white/30 focus:border-call"
+          className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/[0.05] px-4 py-3 text-[16px] outline-none placeholder:text-white/30 focus:border-talent"
         />
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={send}
           disabled={!text.trim()}
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-call transition-opacity disabled:opacity-30"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-talent transition-opacity disabled:opacity-30"
           aria-label="Send"
         >
           <Send size={18} />
@@ -363,7 +363,7 @@ function TopUpBody({ onClose }: { onClose: () => void }) {
           <div className="font-display text-[15px] font-bold">Top up votes</div>
           <div className="text-[12px] text-white/50">You have {votesLeft} left</div>
         </div>
-        <Wallet size={20} className="text-call" />
+        <Wallet size={20} className="text-talent" />
       </div>
       <div className="mt-5 space-y-2">
         {PACKS.map((p) => {
@@ -379,7 +379,7 @@ function TopUpBody({ onClose }: { onClose: () => void }) {
             >
               <span className="font-display text-2xl font-black">{p.v}</span>
               <span className="flex-1 text-[13px] text-white/60">votes</span>
-              {p.tag && <span className="rounded-full bg-call/15 px-2 py-0.5 text-[10px] font-bold text-call">{p.tag}</span>}
+              {p.tag && <span className="rounded-full bg-talent/15 px-2 py-0.5 text-[10px] font-bold text-talent">{p.tag}</span>}
               <span className="font-bold">{p.p}</span>
             </motion.button>
           );

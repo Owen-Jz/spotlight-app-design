@@ -1,25 +1,18 @@
-export type ShowKey = "call" | "task" | "idea";
+export type ShowKey = "talent" | "idea";
 
 export const SHOWS: Record<
   ShowKey,
   { name: string; tagline: string; color: string; stage: string; countdown: string }
 > = {
-  call: {
-    name: "The Call",
-    tagline: "Show your talent. Get the call. Win the crowd.",
+  talent: {
+    name: "Talent",
+    tagline: "Show your talent. Win the crowd.",
     color: "#ff5a1f",
     stage: "Grand Final · LIVE",
     countdown: "Live now",
   },
-  task: {
-    name: "The Task",
-    tagline: "First 10 to finish the task get in. Then the votes decide.",
-    color: "#4c7dff",
-    stage: "Race to qualify",
-    countdown: "3 spots left",
-  },
   idea: {
-    name: "The Idea",
+    name: "Ideas",
     tagline: "Pitch your business. Face the investors. Let Africa vote.",
     color: "#f2b53a",
     stage: "Pitches open",
@@ -75,55 +68,46 @@ const row = (r: Row, i: number): Contestant => {
 // Footage: Mixkit stock (free licence), models standing in as fictional contestants.
 export const CONTESTANTS: Contestant[] = (
   [
-    ["c1", "Tolu Adebayo", "@toluvocals", "Nigeria", "🇳🇬", "Music", "call", "Round 2 task: one song, no instruments, 2 minutes. Here's my shot 🎤", 18420, ["#ff5a1f", "#7a1fff"], "tolu", "2h"],
-    ["c2", "Rafa Mendes", "@rafamoves", "Brazil", "🇧🇷", "Dance", "call", "The call came at 2am. I danced anyway. Vote if you felt it 🔥", 16275, ["#00d1ff", "#1f3dff"], "rafa", "3h"],
-    ["c3", "Amara Okafor", "@amarawrites", "Nigeria", "🇳🇬", "Poetry", "call", "60 seconds to tell you who I am. \"Lagos taught me to be loud.\"", 14902, ["#ff2e7a", "#ffb01f"], "amara", "5h"],
-    ["c4", "Zawadi Njeri", "@zawadilaughs", "Kenya", "🇰🇪", "Comedy", "call", "When your mum finds out you entered a talent show 😂", 12340, ["#22e58a", "#006b5f"], "zawadi", "6h"],
-    ["c8", "Efe Oghene", "@efebars", "Nigeria", "🇳🇬", "Music", "call", "Wrote this verse in the 24 hours they gave us. Round 2, let's go 🎤", 11760, ["#ffb01f", "#ff2e5a"], "efe", "7h"],
-    ["c5", "Sipho Dlamini", "@siphosnaps", "South Africa", "🇿🇦", "Speed challenge", "task", "All 5 items snapped in 3:12. Final 10, here I come ⚡", 9810, ["#4c7dff", "#9b5cff"], "sipho", "8h"],
-    ["c9", "Nia Kamau", "@niamoves", "Kenya", "🇰🇪", "Dance", "call", "Night shoot, one take, zero sleep 💚", 10480, ["#22e58a", "#1f3dff"], "nia", "9h"],
+    ["c1", "Tolu Adebayo", "@toluvocals", "Nigeria", "🇳🇬", "Music", "talent", "Round 2: one song, no instruments, 2 minutes. Here's my shot 🎤", 18420, ["#ff5a1f", "#7a1fff"], "tolu", "2h"],
+    ["c2", "Rafa Mendes", "@rafamoves", "Brazil", "🇧🇷", "Dance", "talent", "Filmed this at 2am. I danced anyway. Vote if you felt it 🔥", 16275, ["#00d1ff", "#1f3dff"], "rafa", "3h"],
+    ["c3", "Amara Okafor", "@amarawrites", "Nigeria", "🇳🇬", "Poetry", "talent", "60 seconds to tell you who I am. \"Lagos taught me to be loud.\"", 14902, ["#ff2e7a", "#ffb01f"], "amara", "5h"],
+    ["c4", "Zawadi Njeri", "@zawadilaughs", "Kenya", "🇰🇪", "Comedy", "talent", "When your mum finds out you entered a talent show 😂", 12340, ["#22e58a", "#006b5f"], "zawadi", "6h"],
+    ["c8", "Efe Oghene", "@efebars", "Nigeria", "🇳🇬", "Music", "talent", "Wrote this verse in the 24 hours they gave us. Round 2, let's go 🎤", 11760, ["#ffb01f", "#ff2e5a"], "efe", "7h"],
+    ["c5", "Sipho Dlamini", "@siphosnaps", "South Africa", "🇿🇦", "Special Talents", "talent", "Beatbox + loop pedal, no edits. Top 10, here I come ⚡", 9810, ["#4c7dff", "#9b5cff"], "sipho", "8h"],
+    ["c9", "Nia Kamau", "@niamoves", "Kenya", "🇰🇪", "Dance", "talent", "Night shoot, one take, zero sleep 💚", 10480, ["#22e58a", "#1f3dff"], "nia", "9h"],
     ["c6", "Emeka Obi", "@emekabuilds", "Nigeria", "🇳🇬", "Agriculture", "idea", "An app that pays farmers the day they harvest. No middlemen 🌾", 7644, ["#f2b53a", "#b8410f"], "emeka", "10h"],
-    ["c7", "Tunde Bakare", "@tundeacts", "Nigeria", "🇳🇬", "Acting", "call", "One monologue. Three characters. 60 seconds.", 11020, ["#c21fff", "#ff1f5a"], "tunde", "12h"],
-    ["c10", "Kemi Lawal", "@kemisings", "Nigeria", "🇳🇬", "Music", "call", "Headphones on, world off. Here's my 60 seconds.", 9120, ["#ff5a1f", "#c21fff"], "kemi", "14h"],
-    ["c11", "Adaeze Nwankwo", "@adaezeglow", "Nigeria", "🇳🇬", "Special Talents", "call", "Yes, I can hold a note AND blow bubbles 🫧 Special Talents, baby", 8350, ["#ff2e7a", "#7a1fff"], "adaeze", "1d"],
+    ["c7", "Tunde Bakare", "@tundeacts", "Nigeria", "🇳🇬", "Acting", "talent", "One monologue. Three characters. 60 seconds.", 11020, ["#c21fff", "#ff1f5a"], "tunde", "12h"],
+    ["c10", "Kemi Lawal", "@kemisings", "Nigeria", "🇳🇬", "Music", "talent", "Headphones on, world off. Here's my 60 seconds.", 9120, ["#ff5a1f", "#c21fff"], "kemi", "14h"],
+    ["c11", "Adaeze Nwankwo", "@adaezeglow", "Nigeria", "🇳🇬", "Special Talents", "talent", "Yes, I can hold a note AND blow bubbles 🫧 Special Talents, baby", 8350, ["#ff2e7a", "#7a1fff"], "adaeze", "1d"],
   ] as Row[]
 ).map(row);
 
 /** People who only appear in rankings (keeps the feed short). */
 const EXTRAS: Contestant[] = (
   [
-    ["x1", "Chidi Nwosu", "@chidi", "Nigeria", "🇳🇬", "Speed challenge", "task", "", 8720, ["#4c7dff", "#00d1ff"], "chidi", "1d"],
-    ["x2", "Fatou Diallo", "@fatou", "Senegal", "🇸🇳", "Speed challenge", "task", "", 7310, ["#2e5bff", "#c21fff"], "fatou", "1d"],
-    ["x3", "Yaw Boateng", "@yaw", "Ghana", "🇬🇭", "Speed challenge", "task", "", 5980, ["#00b3ff", "#1f3dff"], "yaw", "2d"],
-    ["x4", "Valeria Cruz", "@valeria", "Mexico", "🇲🇽", "Speed challenge", "task", "", 4105, ["#5c7dff", "#22e58a"], "valeria", "2d"],
+    ["x1", "Chidi Nwosu", "@chidi", "Nigeria", "🇳🇬", "Music", "talent", "", 8720, ["#4c7dff", "#00d1ff"], "chidi", "1d"],
+    ["x2", "Fatou Diallo", "@fatou", "Senegal", "🇸🇳", "Dance", "talent", "", 7310, ["#2e5bff", "#c21fff"], "fatou", "1d"],
+    ["x3", "Yaw Boateng", "@yaw", "Ghana", "🇬🇭", "Comedy", "talent", "", 5980, ["#00b3ff", "#1f3dff"], "yaw", "2d"],
+    ["x4", "Valeria Cruz", "@valeria", "Mexico", "🇲🇽", "Acting", "talent", "", 4105, ["#5c7dff", "#22e58a"], "valeria", "2d"],
     ["x5", "Kofi Asante", "@kofi", "Ghana", "🇬🇭", "Health care", "idea", "", 6920, ["#f2b53a", "#ff5a1f"], "kofi", "2d"],
     ["x6", "Lucía Ortega", "@lucia", "Colombia", "🇨🇴", "Tourism", "idea", "", 6015, ["#ffd23a", "#b8410f"], "lucia", "3d"],
   ] as Row[]
 ).map((r, i) => row(r, i + 3));
 
-export const HOST = row(["host", "Host Tobi", "@spotlight", "Nigeria", "🇳🇬", "Host", "call", "", 0, ["#ffffff", "#ff5a1f"], "host", ""], 4);
+export const HOST = row(["host", "Host Tobi", "@spotlight", "Nigeria", "🇳🇬", "Host", "talent", "", 0, ["#ffffff", "#ff5a1f"], "host", ""], 4);
 
 export const PEOPLE = [...CONTESTANTS, ...EXTRAS];
 export const findPerson = (id: string) => PEOPLE.find((p) => p.id === id) ?? CONTESTANTS[0];
 
-export const FINALISTS = CONTESTANTS.filter((c) => c.show === "call").slice(0, 4);
+export const FINALISTS = CONTESTANTS.filter((c) => c.show === "talent").slice(0, 4);
 
-export const CALL_STAGES = [
-  { t: "Sell yourself", d: "1-minute intro video" },
+export const TALENT_STAGES = [
+  { t: "Showcase", d: "Post a 1-minute video" },
   { t: "The shortlist", d: "Organisers pick a selected few" },
-  { t: "Call 1", d: "Instant 1-minute task" },
-  { t: "Public vote", d: "Strictly by votes" },
-  { t: "Call 2", d: "2-minute task · 24 hours" },
+  { t: "Round 1", d: "Public vote" },
+  { t: "Round 2", d: "A 2-minute performance · 24 hours" },
   { t: "Vote 2", d: "Performance + votes" },
-  { t: "Grand Final", d: "Live split screen" },
-];
-
-export const TASK_ITEMS = [
-  "A photo with a yellow object",
-  "Your street sign",
-  "Something older than you",
-  "A handwritten Spotlight sign",
-  "A selfie with a stranger",
+  { t: "Grand Final", d: "Live on stage" },
 ];
 
 export const fmt = (n: number) =>
@@ -138,11 +122,10 @@ export const SEED_COMMENTS: [string, string, number][] = [
 ];
 
 export const SEED_ALERTS = [
-  { kind: "live" as const, title: "The Grand Final is LIVE", body: "4 finalists. One screen stays on. Vote now.", time: "now", go: { name: "live" as const } },
-  { kind: "call" as const, title: "You might get The Call", body: "Keep your phone close tonight. Spotlight calls without warning.", time: "12m", go: { name: "incoming" as const } },
-  { kind: "vote" as const, title: "Voting closes in 1 hour", body: "Round 2 of The Call ends at 9:00 PM WAT.", time: "1h", go: { name: "hub" as const, show: "call" as const } },
-  { kind: "result" as const, title: "The Final 10 are in", body: "The Task: 7 of 10 spots taken. 3 left.", time: "3h", go: { name: "hub" as const, show: "task" as const } },
-  { kind: "follow" as const, title: "Rafa Mendes posted", body: "\"The call came at 2am. I danced anyway.\"", time: "3h", go: { name: "profile" as const, id: "c2" } },
+  { kind: "live" as const, title: "The Grand Final is LIVE", body: "4 finalists, one winner. Vote now.", time: "now", go: { name: "live" as const } },
+  { kind: "vote" as const, title: "Voting closes in 1 hour", body: "Round 2 of Talent ends at 9:00 PM WAT.", time: "1h", go: { name: "hub" as const, show: "talent" as const } },
+  { kind: "result" as const, title: "Investor day is Friday", body: "Ideas: 12 founders pitch live to the panel.", time: "3h", go: { name: "hub" as const, show: "idea" as const } },
+  { kind: "follow" as const, title: "Rafa Mendes posted", body: "\"Filmed this at 2am. I danced anyway.\"", time: "3h", go: { name: "profile" as const, id: "c2" } },
 ];
 
 /* ---------------- countries & flags ---------------- */
@@ -215,7 +198,7 @@ export function statsFor(c: Contestant, all: Contestant[] = PEOPLE): Stats {
     followers: Math.round(c.votes * (2.4 + r() * 2)),
     views: Math.round(c.votes * (9 + r() * 6)),
     streak: 2 + Math.floor(r() * 9),
-    round: c.show === "call" ? 2 : 1,
+    round: c.show === "talent" ? 2 : 1,
     supporters: FANS.slice(0, 5)
       .map((name, i) => ({ name, votes: Math.round((c.votes / 60) * (1 - i * 0.16) * (0.8 + r() * 0.4)) }))
       .sort((a, b) => b.votes - a.votes),

@@ -29,9 +29,8 @@ const T = {
 };
 
 const SHOWS = [
-  { t: "The Call", c: "#ff5a1f" },
-  { t: "The Task", c: "#4c7dff" },
-  { t: "The Idea", c: "#f2b53a" },
+  { t: "Talent", c: "#ff5a1f" },
+  { t: "Ideas", c: "#f2b53a" },
 ];
 
 /** Dust caught in the beam: fixed positions so every render is identical. */

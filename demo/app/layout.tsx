@@ -21,7 +21,7 @@ const body = Manrope({
 
 export const metadata: Metadata = {
   title: "Spotlight",
-  description: "The Call · The Task · The Idea — talent shows you vote on, from your phone.",
+  description: "Talent and Ideas: the shows you vote on. Showcase your gift or pitch your business, and the public decides.",
   appleWebApp: { capable: true, title: "Spotlight", statusBarStyle: "black-translucent" },
 };
 

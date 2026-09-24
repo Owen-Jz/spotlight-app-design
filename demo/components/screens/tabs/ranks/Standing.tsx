@@ -47,7 +47,9 @@ export function StandingRow({
             <Flag country={c.country} size={11} />
           </div>
           <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/45">
-            <span className="truncate">{c.category}</span>
+            <span className="truncate font-semibold" style={{ color: `${color}cc` }}>
+              {c.category}
+            </span>
             <span className="h-0.5 w-0.5 rounded-full bg-white/30" />
             <span className="tabular-nums">{c.share}%</span>
             {mine > 0 && (
@@ -94,7 +96,7 @@ export function StandingRow({
   );
 }
 
-/** Everything a fan wants to know about one contestant's race. Used in rows and under the podium. */
+/** Everything a fan wants to know about one contestant's standing. Used in rows and under the podium. */
 export function Detail({ c, above }: { c: Ranked; above?: Ranked }) {
   const { openVote, push, myVotes } = useNav();
   const now = useNow();
@@ -105,11 +107,11 @@ export function Detail({ c, above }: { c: Ranked; above?: Ranked }) {
 
   return (
     <div className="border-t border-white/[0.06] px-3 pb-3 pt-3">
-      {/* the race: who's right above you */}
+      {/* the chase: who is right above you */}
       <div className="mb-3 rounded-xl px-3 py-2 text-[12px]" style={{ background: `${color}14`, border: `1px solid ${color}30` }}>
         {c.gapUp === null ? (
           <span>
-            <b style={{ color }}>Leading</b> the show by <b className="tabular-nums">{fmt(c.gapDown ?? 0)}</b> votes
+            <b style={{ color }}>Leading</b> by <b className="tabular-nums">{fmt(c.gapDown ?? 0)}</b> votes
           </span>
         ) : (
           <span>
@@ -125,7 +127,7 @@ export function Detail({ c, above }: { c: Ranked; above?: Ranked }) {
         <Stat label="Today" value={`+${fmt(c.today)}`} color={color} />
         <Stat label="Share" value={`${c.share}%`} />
         <Stat label="Fans" value={fmt(c.stats.followers)} />
-        <Stat label="Streak" value={`${c.stats.streak}d`} icon={<Flame size={10} className="text-call" />} />
+        <Stat label="Streak" value={`${c.stats.streak}d`} icon={<Flame size={10} className="text-talent" />} />
       </div>
 
       <div className="mt-4">

@@ -7,18 +7,21 @@ import { TALENT_CATEGORIES } from "@/lib/data";
 import { useNav } from "../nav";
 import { Button, Media } from "../ui";
 
-const LIMIT = 60;
+// a showcase is 1 minute; a Round 2 performance (with a brief) is 2
+const SHOWCASE_LIMIT = 60;
+const ROUND2_LIMIT = 120;
 const R = 44;
 const CIRC = 2 * Math.PI * R;
 
 // prompts that rotate while you record, like a coach behind the camera
 const TIPS = ["Look into the lens", "Say your name and where you're from", "Show us the thing only you can do", "Big finish. Make them vote."];
 
-/** Fake camera: the 60-second "sell yourself" (or a task from The Call). */
-export function Record({ task }: { task?: string }) {
+/** Fake camera: the 60-second "sell yourself" showcase, or a 2-minute Round 2 performance to a brief. */
+export function Record({ brief }: { brief?: string }) {
+  const LIMIT = brief ? ROUND2_LIMIT : SHOWCASE_LIMIT;
   const { pop, replace, toast, addEntry, entries } = useNav();
   const [cat, setCat] = useState("Music");
-  const [phase, setPhase] = useState<"ready" | "count" | "rec" | "review" | "done">(task ? "rec" : "ready");
+  const [phase, setPhase] = useState<"ready" | "count" | "rec" | "review" | "done">("ready");
   const [sec, setSec] = useState(0);
   const [count, setCount] = useState(3);
 
@@ -38,7 +41,7 @@ export function Record({ task }: { task?: string }) {
       clearInterval(tick);
       clearTimeout(stop);
     };
-  }, [phase]);
+  }, [phase, LIMIT]);
 
   const left = LIMIT - sec;
 
@@ -75,17 +78,17 @@ export function Record({ task }: { task?: string }) {
                 className="flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 font-display text-sm font-bold backdrop-blur-md"
               >
                 <motion.span className="h-2 w-2 rounded-full bg-red-500" animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} />
-                0:{String(left).padStart(2, "0")}
+                {Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")}
               </motion.div>
             )}
           </AnimatePresence>
           <div className="w-10" />
         </div>
 
-        {task ? (
-          <div className="mt-4 rounded-2xl border border-call/40 bg-call/15 p-3 backdrop-blur-md">
-            <div className="text-[10px] font-extrabold uppercase tracking-widest text-call">Your task · Call 1</div>
-            <div className="mt-1 text-[14px] font-bold">{task}</div>
+        {brief ? (
+          <div className="mt-4 rounded-2xl border border-talent/40 bg-talent/15 p-3 backdrop-blur-md">
+            <div className="text-[10px] font-extrabold uppercase tracking-widest text-talent">Round 2 brief · 2-minute performance</div>
+            <div className="mt-1 text-[14px] font-bold">{brief}</div>
           </div>
         ) : (
           phase === "ready" && (
@@ -125,7 +128,7 @@ export function Record({ task }: { task?: string }) {
 
       {/* coaching tips while recording */}
       <AnimatePresence mode="wait">
-        {phase === "rec" && !task && (
+        {phase === "rec" && !brief && (
           <motion.div
             key={Math.min(TIPS.length - 1, Math.floor(sec / 15))}
             initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
@@ -150,11 +153,13 @@ export function Record({ task }: { task?: string }) {
             className="absolute inset-x-8 top-[40%] text-center"
           >
             <div className="font-display text-[26px] font-extrabold leading-tight">
-              Sell yourself in
+              {brief ? "Your Round 2" : "Sell yourself in"}
               <br />
-              <span className="text-call">one minute.</span>
+              <span className="text-talent">{brief ? "performance." : "one minute."}</span>
             </div>
-            <p className="mt-3 text-[13px] text-white/60">Who are you, and why should Africa vote for you?</p>
+            <p className="mt-3 text-[13px] text-white/60">
+              {brief ? "Two minutes, one take. Give the crowd a reason to keep you in." : "Who are you, and why should Africa vote for you?"}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -196,7 +201,7 @@ export function Record({ task }: { task?: string }) {
                 />
               </button>
               <span className="text-[12px] font-bold text-white/60">
-                {phase === "ready" ? `${task ? "Task" : cat} · tap to record` : phase === "count" ? "Get ready…" : "Tap to stop"}
+                {phase === "ready" ? `${brief ? "Round 2" : cat} · tap to record` : phase === "count" ? "Get ready…" : "Tap to stop"}
               </span>
             </motion.div>
           )}
@@ -204,11 +209,11 @@ export function Record({ task }: { task?: string }) {
           {phase === "review" && (
             <motion.div key="review" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
               <div className="text-center text-[13px] font-semibold text-white/70">
-                {sec}s clip recorded · {task ? "Call 1 task" : cat}
+                {sec}s clip recorded · {brief ? "Round 2 performance" : cat}
               </div>
               <Button
                 onClick={() => {
-                  addEntry({ show: "call", title: task ? "Call 1 task" : "Sell yourself", category: task ? "Call 1" : cat });
+                  addEntry({ show: "talent", title: brief ? "Round 2 performance" : "Showcase", category: brief ? "Round 2" : cat });
                   setPhase("done");
                 }}
               >
@@ -240,7 +245,7 @@ export function Record({ task }: { task?: string }) {
               initial={{ scale: 0, rotate: -45 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.1 }}
-              className="flex h-24 w-24 items-center justify-center rounded-full bg-call shadow-[0_0_80px_#ff5a1f]"
+              className="flex h-24 w-24 items-center justify-center rounded-full bg-talent shadow-[0_0_80px_#ff5a1f]"
             >
               <Check size={46} strokeWidth={3} />
             </motion.div>
@@ -253,9 +258,9 @@ export function Record({ task }: { task?: string }) {
               You&apos;re in the running.
             </motion.h2>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-3 text-[14px] text-white/60">
-              {task
-                ? "Voting opens when every finalist has submitted. Share your entry to get votes."
-                : "The organisers pick a selected few. If it's you, keep your phone close. Spotlight will call."}
+              {brief
+                ? "Vote 2 opens when every act has posted. Share your performance to get votes."
+                : "The organisers pick a selected few for the shortlist. If it's you, you'll get a notification and voting opens."}
             </motion.p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-10 w-full">
               <div className="space-y-2.5">

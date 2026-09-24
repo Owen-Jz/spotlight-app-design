@@ -254,7 +254,7 @@ export function Profile({ id }: { id: string }) {
                 <TrendChart data={stats.trend} color={color} />
               </div>
               <div className="mt-3 flex items-center gap-2 rounded-xl bg-white/[0.04] px-3 py-2 text-[12px] text-white/60">
-                <Flame size={14} className="text-call" />
+                <Flame size={14} className="text-talent" />
                 {stats.streak}-day streak of new votes
               </div>
             </div>

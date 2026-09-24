@@ -3,36 +3,29 @@
 import { motion } from "motion/react";
 import { BadgeCheck, Check, Crown, Play } from "lucide-react";
 import { useId, type ReactNode } from "react";
-import { CALL_STAGES, PEOPLE, fmt, type Contestant, type ShowKey } from "@/lib/data";
+import { PEOPLE, TALENT_STAGES, fmt, type Contestant, type ShowKey } from "@/lib/data";
 import { Media, glass, rise } from "../../ui";
 
 /* ---------------- show journeys ---------------- */
 
 export const JOURNEYS: Record<ShowKey, { t: string; d: string }[]> = {
-  call: CALL_STAGES,
-  task: [
-    { t: "The race", d: "Finish the task first" },
-    { t: "Final 10", d: "First ten through" },
-    { t: "Public vote", d: "Strictly by votes" },
-    { t: "Winner", d: "Crowned live" },
-  ],
+  talent: TALENT_STAGES,
   idea: [
-    { t: "The pitch", d: "2-minute business pitch" },
-    { t: "Investor review", d: "Panel picks the room" },
+    { t: "Pitch slot", d: "Book a pitch slot" },
+    { t: "The pitch", d: "Record your pitch" },
+    { t: "Investor panel", d: "Live Q&A with the panel" },
     { t: "Public vote", d: "Africa backs an idea" },
-    { t: "Pitch live", d: "Face the investors" },
-    { t: "Funded", d: "Deal on the table" },
+    { t: "Announcement", d: "Winners revealed live" },
   ],
 };
 
 /** where each show's live contestants are right now */
-export const CURRENT_STAGE: Record<ShowKey, number> = { call: 4, task: 2, idea: 2 };
+export const CURRENT_STAGE: Record<ShowKey, number> = { talent: 4, idea: 3 };
 
 /** titles of the entries a contestant has posted so far */
 export const ENTRY_TITLES: Record<ShowKey, string[]> = {
-  call: ["Sell yourself", "Call 1", "Call 2"],
-  task: ["The race", "Final 10 task"],
-  idea: ["The pitch", "Investor Q&A"],
+  talent: ["1-minute showcase", "Round 2 performance"],
+  idea: ["The pitch", "Live Q&A with the panel"],
 };
 
 export const totalVotes = (c: Contestant, extra: Record<string, number>) => c.votes + (extra[c.id] ?? 0);

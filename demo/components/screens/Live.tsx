@@ -46,8 +46,9 @@ const CONFETTI = Array.from({ length: 46 }).map((_, i) => ({
 
 export function Live() {
   const { pop, openVote, user } = useNav();
-  const [phase, setPhase] = useState<"live" | "drum" | "winner">("live");
-  const [count, setCount] = useState(3);
+  const [phase, setPhase] = useState<"live" | "reveal" | "winner">("live");
+  /** finalists whose screens the host has switched off, in order */
+  const [out, setOut] = useState<string[]>([]);
   const [share, setShare] = useState([31, 27, 24, 18]);
   const [viewers, setViewers] = useState(12400);
   const [chat, setChat] = useState<Msg[]>([]);
@@ -55,6 +56,8 @@ export function Live() {
   const [hearts, setHearts] = useState<{ id: number; x: number }[]>([]);
   const winner = FINALISTS[0];
   const leader = share.indexOf(Math.max(...share));
+  const left = FINALISTS.length - out.length;
+  const lastOut = out.length ? FINALISTS.find((f) => f.id === out[out.length - 1]) : undefined;
 
   function heart() {
     const id = Date.now() + Math.random();
@@ -101,12 +104,19 @@ export function Live() {
     return () => clearTimeout(t);
   }, [phase]);
 
-  // drum roll
+  // the reveal: the host switches screens off one at a time, lowest share first,
+  // until only the winner's screen is still on
   useEffect(() => {
-    if (phase !== "drum") return;
-    const t = setTimeout(() => (count > 1 ? setCount((c) => c - 1) : setPhase("winner")), 900);
+    if (phase !== "reveal") return;
+    const standing = FINALISTS.map((f, i) => ({ f, s: share[i] })).filter(({ f }) => f.id !== winner.id && !out.includes(f.id));
+    if (!standing.length) {
+      const t = setTimeout(() => setPhase("winner"), 1400);
+      return () => clearTimeout(t);
+    }
+    const next = standing.reduce((a, b) => (b.s < a.s ? b : a)).f;
+    const t = setTimeout(() => setOut((o) => [...o, next.id]), out.length ? 1700 : 1100);
     return () => clearTimeout(t);
-  }, [phase, count]);
+  }, [phase, out, share, winner.id]);
 
 
 
@@ -115,7 +125,7 @@ export function Live() {
       {/* header */}
       <div className="safe-top relative z-20 flex items-center justify-between px-4 pb-2">
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 rounded-md bg-call px-2 py-1 text-[11px] font-extrabold tracking-wider">
+          <span className="flex items-center gap-1.5 rounded-md bg-talent px-2 py-1 text-[11px] font-extrabold tracking-wider">
             <motion.span className="h-1.5 w-1.5 rounded-full bg-white" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1, repeat: Infinity }} />
             LIVE
           </span>
@@ -133,50 +143,79 @@ export function Live() {
         <>
           {/* split screen */}
           <div className="relative grid h-[50%] shrink-0 grid-cols-2 gap-1 px-1">
-            {FINALISTS.map((c, i) => (
-              <motion.button
-                layoutId={`tile-${c.id}`}
-                key={c.id}
-                onClick={() => openVote(c)}
-                className="relative overflow-hidden rounded-xl text-left"
-                exit={{ opacity: 0, scale: 0.8 }}
-              >
-                <Media hue={c.hue} video={c.slug} />
-                <div className="absolute inset-x-0 bottom-0 p-2.5">
-                  <div className="flex items-center gap-1.5 text-[12px] font-bold drop-shadow">
-                    {c.name.split(" ")[0]} <Flag country={c.country} size={10} />
-                    {i === leader && phase === "live" && (
-                      <motion.span layoutId="leader" className="ml-auto rounded bg-idea px-1 text-[9px] font-extrabold text-ink">
-                        LEADS
-                      </motion.span>
-                    )}
-                  </div>
-                  <div className="mt-1.5 flex items-center gap-2">
-                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/20">
-                      <motion.div className="h-full rounded-full bg-white" animate={{ width: `${share[i]}%` }} transition={{ duration: 1 }} />
+            {FINALISTS.map((c, i) => {
+              const off = out.includes(c.id);
+              return (
+                <motion.button
+                  layoutId={`tile-${c.id}`}
+                  key={c.id}
+                  disabled={off}
+                  onClick={() => openVote(c)}
+                  className="relative overflow-hidden rounded-xl text-left"
+                  animate={{ filter: off ? "grayscale(1)" : "grayscale(0)" }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                >
+                  <Media hue={c.hue} video={c.slug} still={off} />
+                  <div className="absolute inset-x-0 bottom-0 p-2.5">
+                    <div className="flex items-center gap-1.5 text-[12px] font-bold drop-shadow">
+                      {c.name.split(" ")[0]} <Flag country={c.country} size={10} />
+                      {i === leader && phase === "live" && (
+                        <motion.span layoutId="leader" className="ml-auto rounded bg-idea px-1 text-[9px] font-extrabold text-ink">
+                          LEADS
+                        </motion.span>
+                      )}
                     </div>
-                    <span className="w-8 text-right text-[11px] font-extrabold">{Math.round(share[i])}%</span>
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/20">
+                        <motion.div className="h-full rounded-full bg-white" animate={{ width: `${share[i]}%` }} transition={{ duration: 1 }} />
+                      </div>
+                      <span className="w-8 text-right text-[11px] font-extrabold">{Math.round(share[i])}%</span>
+                    </div>
                   </div>
-                </div>
-              </motion.button>
-            ))}
+  
+                  {/* screen switched off: a CRT-style collapse, then dark */}
+                  <AnimatePresence>
+                    {off && (
+                      <motion.div key="off" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <motion.span
+                          className="absolute inset-0 bg-black"
+                          initial={{ scaleY: 0 }}
+                          animate={{ scaleY: 1 }}
+                          transition={{ duration: 0.35, ease: "easeIn" }}
+                          style={{ opacity: 0.82 }}
+                        />
+                        <motion.span
+                          className="absolute left-0 top-1/2 h-0.5 w-full bg-white"
+                          initial={{ scaleX: 1, opacity: 1 }}
+                          animate={{ scaleX: 0, opacity: 0 }}
+                          transition={{ delay: 0.3, duration: 0.45 }}
+                        />
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.6 }}
+                          className="relative rounded-md border border-white/20 px-2 py-1 font-display text-[11px] font-extrabold tracking-[0.25em] text-white/70"
+                        >
+                          OUT
+                        </motion.span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              );
+            })}
 
             <AnimatePresence>
-              {phase === "drum" && (
+              {phase === "reveal" && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm"
+                  className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-talent/50 bg-black/75 px-4 py-2 text-center backdrop-blur-md"
                 >
-                  <div className="text-[12px] font-bold uppercase tracking-[0.3em] text-white/60">And the winner is</div>
-                  <motion.div
-                    key={count}
-                    initial={{ scale: 2.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="font-display text-[96px] font-black text-call"
-                  >
-                    {count}
+                  <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/55">Screens on</div>
+                  <motion.div key={left} initial={{ scale: 1.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="font-display text-[30px] font-black leading-none text-talent">
+                    {left}
                   </motion.div>
                 </motion.div>
               )}
@@ -188,7 +227,7 @@ export function Live() {
             <motion.div layoutId="host" className="relative h-16 w-24 shrink-0 overflow-hidden rounded-xl">
               <Media hue={HOST.hue} video="host" />
               <span className="absolute bottom-1 left-1.5 flex items-center gap-1 text-[10px] font-bold">
-                <motion.span className="h-1 w-1 rounded-full bg-call" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1, repeat: Infinity }} />
+                <motion.span className="h-1 w-1 rounded-full bg-talent" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1, repeat: Infinity }} />
                 LIVE
               </span>
             </motion.div>
@@ -198,13 +237,17 @@ export function Live() {
               </div>
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={phase}
+                  key={`${phase}-${out.length}`}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   className="mt-1 text-[13px] leading-snug text-white/65"
                 >
-                  {phase === "drum" ? "“Only one screen stays on…”" : "Tap a finalist to vote. Voting closes when the host calls it."}
+                  {phase === "reveal"
+                    ? lastOut
+                      ? `“${lastOut.name.split(" ")[0]}, your screen goes dark. ${left > 2 ? `${left} still standing…` : left === 2 ? "Two left. Only one stays on…" : "One screen left on…"}”`
+                      : "“Voting is closed. Only one screen stays on…”"
+                    : "Tap a finalist to vote. Voting closes when the host starts the reveal."}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -255,15 +298,15 @@ export function Live() {
                 heart();
               }}
               placeholder="Say something…"
-              className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/10 px-4 py-3 text-[16px] outline-none placeholder:text-white/40 focus:border-call"
+              className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/10 px-4 py-3 text-[16px] outline-none placeholder:text-white/40 focus:border-talent"
             />
             <motion.button whileTap={{ scale: 0.8 }} onClick={heart} className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10" aria-label="React">
               <Heart size={20} fill="#ff2e5a" className="text-[#ff2e5a]" />
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              disabled={phase === "drum"}
-              onClick={() => setPhase("drum")}
+              disabled={phase === "reveal"}
+              onClick={() => setPhase("reveal")}
               className="flex h-11 items-center gap-1.5 rounded-full bg-idea px-4 text-[12px] font-extrabold text-ink"
             >
               <Crown size={14} /> Reveal
@@ -271,7 +314,7 @@ export function Live() {
           </div>
         </>
       ) : (
-        /* the winner alone with the caller */
+        /* the last screen standing: the winner, beside the host on stage */
         <div className="relative flex min-h-0 flex-1 flex-col gap-1 px-1 pb-1">
           <motion.div layoutId={`tile-${winner.id}`} className="relative flex-[1.3] overflow-hidden rounded-2xl">
             <Media hue={winner.hue} video={winner.slug} />
@@ -293,7 +336,7 @@ export function Live() {
           <motion.div layoutId="host" className="relative flex-1 overflow-hidden rounded-2xl">
             <Media hue={HOST.hue} video="host" />
             <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/40 py-1 pl-1 pr-2.5 text-[11px] font-bold backdrop-blur-md">
-              <Avatar c={HOST} size={20} /> {HOST.name} · on the call
+              <Avatar c={HOST} size={20} /> {HOST.name} · on stage
             </span>
           </motion.div>
 

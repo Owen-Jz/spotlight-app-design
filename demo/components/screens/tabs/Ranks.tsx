@@ -7,29 +7,31 @@ import { SHOWS, type ShowKey } from "@/lib/data";
 import { useNav } from "../../nav";
 import { Flag, glass, rise } from "../../ui";
 import { Page } from "./common";
-import { rankShow, type Ranked } from "./ranks/model";
+import { FILTERS, FILTER_KEYS, rankShow, type Ranked, type ShowFilter } from "./ranks/model";
 import { Podium } from "./ranks/Podium";
 import { Chip, CountryBoard, RisingFast, SectionTitle, StatusCard, YourPicks } from "./ranks/Sections";
 import { Detail, StandingRow } from "./ranks/Standing";
 
 const KEYS = Object.keys(SHOWS) as ShowKey[];
+const BOTH = `linear-gradient(100deg, ${SHOWS.talent.color}, ${SHOWS.idea.color})`;
 
 /* ---------------- Ranks ---------------- */
 
 export function Ranks() {
   const { extraVotes } = useNav();
-  const [show, setShow] = useState<ShowKey>("call");
+  const [show, setShow] = useState<ShowFilter>("all");
   const [cat, setCat] = useState<string | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
 
-  // every show is ranked so "Your picks" can quote live ranks across shows
+  // every show is ranked so "Your picks" can quote live ranks in each show
   const ranked = useMemo(
     () => Object.fromEntries(KEYS.map((k) => [k, rankShow(k, extraVotes)])) as Record<ShowKey, Ranked[]>,
     [extraVotes],
   );
-  const list = ranked[show];
-  const color = SHOWS[show].color;
+  const everyone = useMemo(() => rankShow("all", extraVotes), [extraVotes]);
+  const list = show === "all" ? everyone : ranked[show];
+  const color = FILTERS[show].color;
 
   const categories = [...new Set(list.map((c) => c.category))];
   const countries = [...new Set(list.map((c) => c.country))];
@@ -41,7 +43,7 @@ export function Ranks() {
   const total = list.reduce((a, c) => a + c.total, 0);
   const fresh = list.reduce((a, c) => a + (extraVotes[c.id] ?? 0), 0);
 
-  const switchShow = (k: ShowKey) => {
+  const switchShow = (k: ShowFilter) => {
     setShow(k);
     setCat(null);
     setCountry(null);
@@ -67,7 +69,7 @@ export function Ranks() {
     <Page title="Rankings">
       {/* show switcher */}
       <motion.div variants={rise} role="tablist" className={`mb-4 flex rounded-2xl p-1 ${glass}`}>
-        {KEYS.map((k) => (
+        {FILTER_KEYS.map((k) => (
           <button
             key={k}
             role="tab"
@@ -80,11 +82,15 @@ export function Ranks() {
               <motion.span
                 layoutId="rankseg"
                 className="absolute inset-0 rounded-xl"
-                style={{ background: SHOWS[k].color, boxShadow: `0 8px 24px -8px ${SHOWS[k].color}` }}
+                style={
+                  k === "all"
+                    ? { background: BOTH, boxShadow: `0 8px 24px -8px ${SHOWS.talent.color}` }
+                    : { background: SHOWS[k].color, boxShadow: `0 8px 24px -8px ${SHOWS[k].color}` }
+                }
                 transition={{ type: "spring", stiffness: 420, damping: 32 }}
               />
             )}
-            <span className="relative">{SHOWS[k].name}</span>
+            <span className="relative">{FILTERS[k].name}</span>
           </button>
         ))}
       </motion.div>

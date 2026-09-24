@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { BellOff, CheckCheck, Gift, Heart, Phone, Radio, Trash2, Trophy, UserPlus } from "lucide-react";
+import { BellOff, CheckCheck, Gift, Heart, Radio, Trash2, Trophy, UserPlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { DAILY_FREE_VOTES, HOST, findPerson, type Contestant } from "@/lib/data";
 import { useNav, type Alert, type Route } from "../nav";
@@ -9,8 +9,7 @@ import { Avatar, Flag, TopBar } from "../ui";
 
 type Kind = Alert["kind"] | "gift";
 
-const KIND: Record<Kind, { icon: typeof Phone; c: string }> = {
-  call: { icon: Phone, c: "#ff5a1f" },
+const KIND: Record<Kind, { icon: typeof Radio; c: string }> = {
   live: { icon: Radio, c: "#ff2e5a" },
   vote: { icon: Heart, c: "#ff2e7a" },
   follow: { icon: UserPlus, c: "#4c7dff" },
@@ -24,7 +23,7 @@ type Item = { id: number | string; kind: Kind; title: string; body: string; time
 const EARLIER: Item[] = [
   { id: "e1", kind: "gift", title: `Your ${DAILY_FREE_VOTES} free votes refilled`, body: "A fresh 10 every day at midnight. Spend them on anyone.", time: "1d", unread: false },
   { id: "e2", kind: "follow", title: "Amara Okafor posted", body: "\"60 seconds to tell you who I am.\"", time: "1d", unread: false, go: { name: "profile", id: "c3" } },
-  { id: "e3", kind: "result", title: "Round 1 results are out", body: "Tolu, Rafa and Amara lead The Call.", time: "2d", unread: false, go: { name: "hub", show: "call" } },
+  { id: "e3", kind: "result", title: "Round 1 results are out", body: "Tolu, Rafa and Amara lead Talent.", time: "2d", unread: false, go: { name: "hub", show: "talent" } },
 ];
 
 const isToday = (t: string) => t === "now" || /^\d+(s|m|h)$/.test(t);
@@ -76,7 +75,7 @@ export function Notifications() {
           <div key={g.t} className="mt-3">
             <div className="mb-2 flex items-center justify-between px-1">
               <span className="text-[12px] font-bold uppercase tracking-wider text-white/40">{g.t}</span>
-              {g.t === "Today" && unread > 0 && <span className="text-[12px] font-bold text-call">{unread} new</span>}
+              {g.t === "Today" && unread > 0 && <span className="text-[12px] font-bold text-talent">{unread} new</span>}
             </div>
             <div className="space-y-2">
               <AnimatePresence initial={true}>
@@ -107,7 +106,7 @@ export function Notifications() {
               <BellOff size={24} className="text-white/50" />
             </div>
             <div className="mt-5 font-display text-[17px] font-bold">You&apos;re all caught up</div>
-            <p className="mt-2 max-w-[240px] text-[13px] text-white/50">When Spotlight calls, a show goes live, or someone you follow posts, it lands here.</p>
+            <p className="mt-2 max-w-[240px] text-[13px] text-white/50">When you&apos;re shortlisted, a show goes live, or someone you follow posts, it lands here.</p>
           </motion.div>
         )}
 
@@ -177,7 +176,7 @@ function Row({ a, i, dot, onOpen, onDismiss }: { a: Item; i: number; dot: boolea
             </div>
           )}
         </div>
-        {dot && <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-call shadow-[0_0_8px_#ff5a1f]" />}
+        {dot && <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-talent shadow-[0_0_8px_#ff5a1f]" />}
       </motion.button>
     </motion.div>
   );

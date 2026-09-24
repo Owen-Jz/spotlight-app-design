@@ -1,9 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { House, Phone, Plus, Trophy, User, Video } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNav } from "../nav";
+import { House, Plus, Trophy, User, Video } from "lucide-react";
+import { useState } from "react";
 import { Home } from "./tabs/Home";
 import { Shows } from "./tabs/Shows";
 import { Enter } from "./tabs/Enter";
@@ -12,29 +11,8 @@ import { Me } from "./tabs/Me";
 
 type Tab = "home" | "shows" | "enter" | "ranks" | "me";
 
-// Only ring once per visit — it's a demo of the moment, not a nag.
-let callBannerShown = false;
-
 export function Main() {
   const [tab, setTab] = useState<Tab>("home");
-  const { push } = useNav();
-  const [banner, setBanner] = useState(false);
-
-  // the banner slides away on its own if ignored
-  useEffect(() => {
-    if (!banner) return;
-    const t = setTimeout(() => setBanner(false), 8000);
-    return () => clearTimeout(t);
-  }, [banner]);
-
-  useEffect(() => {
-    if (callBannerShown) return;
-    const t = setTimeout(() => {
-      callBannerShown = true;
-      setBanner(true);
-    }, 7000);
-    return () => clearTimeout(t);
-  }, []);
 
   return (
     <div className="relative h-full">
@@ -53,39 +31,6 @@ export function Main() {
           {tab === "ranks" && <Ranks />}
           {tab === "me" && <Me />}
         </motion.div>
-      </AnimatePresence>
-
-      {/* incoming-call push notification */}
-      <AnimatePresence>
-        {banner && (
-          <motion.button
-            initial={{ y: -130, filter: "blur(10px)" }}
-            animate={{ y: 0, filter: "blur(0px)" }}
-            exit={{ y: -150 }}
-            transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
-            onDragEnd={(_, i) => i.offset.y < -30 && setBanner(false)}
-            onClick={() => {
-              setBanner(false);
-              push({ name: "incoming" });
-            }}
-            className="safe-top-pos absolute inset-x-3 z-40 flex items-center gap-3 rounded-[24px] border border-white/10 bg-[#1a1a1c]/80 p-3 text-left shadow-2xl backdrop-blur-2xl"
-          >
-            <motion.div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-call"
-              animate={{ rotate: [0, -12, 12, -12, 12, 0] }}
-              transition={{ duration: 0.7, repeat: Infinity, repeatDelay: 0.9 }}
-            >
-              <Phone size={20} fill="white" strokeWidth={0} />
-            </motion.div>
-            <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-call">Spotlight · The Call</div>
-              <div className="text-[14px] font-bold">You&apos;ve been chosen. We&apos;re calling you…</div>
-              <div className="text-[12px] text-white/50">Tap to answer</div>
-            </div>
-          </motion.button>
-        )}
       </AnimatePresence>
 
       <TabBar tab={tab} setTab={setTab} />
@@ -152,7 +97,7 @@ function TabBar({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
               {on && (
                 <motion.span
                   layoutId="tabbead"
-                  className="absolute -bottom-0.5 h-1 w-1 rounded-full bg-call shadow-[0_0_8px_2px_rgba(255,90,31,.7)]"
+                  className="absolute -bottom-0.5 h-1 w-1 rounded-full bg-talent shadow-[0_0_8px_2px_rgba(255,90,31,.7)]"
                   transition={{ type: "spring", stiffness: 420, damping: 34 }}
                 />
               )}

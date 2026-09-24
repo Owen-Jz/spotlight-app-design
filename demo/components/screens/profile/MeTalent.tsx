@@ -10,7 +10,7 @@ import { EntryTile, JOURNEYS, JourneyBar, SectionHead, StatTile, TrendChart, Ver
 
 export function MeTalent() {
   const { user, entries, push, toast, extraVotes } = useNav();
-  const show = entries[0]?.show ?? "call";
+  const show = entries[0]?.show ?? "talent";
   const color = SHOWS[show].color;
   const category = user.talent ?? user.interests[0] ?? "Music";
   const stageName = user.stageName || user.name;
@@ -69,7 +69,11 @@ export function MeTalent() {
             <div className="text-[11px] font-bold uppercase tracking-wider text-white/45">Your journey</div>
             <div className="mt-1 font-display text-[20px] font-extrabold">{steps[stage].t}</div>
             <div className="mt-0.5 text-[12.5px] text-white/55">
-              {n ? "Your intro is with the organisers. Keep your phone close — Spotlight calls without warning." : "Record a 1-minute intro to get in front of the organisers."}
+              {n
+                ? show === "idea"
+                  ? "Your pitch is in. The investor panel reviews it next, then a live Q&A with the panel."
+                  : "Your showcase is with the organisers. Make the shortlist and Round 1 goes to the public vote."
+                : "Post a 1-minute showcase to get in front of the organisers."}
             </div>
           </div>
           <span className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-extrabold" style={{ background: `${color}26`, color }}>

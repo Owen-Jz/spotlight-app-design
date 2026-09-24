@@ -71,16 +71,12 @@
   "mixkit": 1817,
   "kb": 439
  },
- "show-call": {
-  "mixkit": 14084,
-  "kb": 737
- },
- "show-task": {
-  "mixkit": 17631,
-  "kb": 768
- },
  "show-idea": {
   "mixkit": 12983,
   "kb": 383
+ },
+ "show-talent": {
+  "mixkit": 14084,
+  "kb": 737
  }
 }

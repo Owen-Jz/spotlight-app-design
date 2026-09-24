@@ -9,7 +9,7 @@ import { Avatar, Flag, Media, ShowBadge } from "../ui";
 
 /**
  * Full-screen playback of one entry. `id` is either a contestant's entry
- * ("c1:Call 2") or one of your own ("e123…").
+ * ("c1:Round 2") or one of your own ("e123…").
  */
 export function EntryViewer({ id }: { id: string }) {
   const { pop, push, entries, openVote, sheet, user } = useNav();
@@ -58,24 +58,24 @@ export function EntryViewer({ id }: { id: string }) {
             <span className="rounded-full bg-idea px-2.5 py-1 text-[11px] font-extrabold text-ink">{mine.status}</span>
             <div className="mt-3 font-display text-[22px] font-bold">{user.name}</div>
             <p className="mt-1 text-[14px] text-white/70">
-              Submitted {mine.at.toLowerCase()} · {mine.category}. The organisers are reviewing it. If you&apos;re picked, Spotlight will call.
+              Submitted {mine.at.toLowerCase()} · {mine.category}. The organisers are reviewing it. If you&apos;re shortlisted, the public vote opens.
             </p>
-            {/* where the entry is on its way to The Call */}
+            {/* where the entry is on its way to the public vote */}
             <div className="mt-4 flex items-center">
-              {["Submitted", "In review", "Shortlist", "The Call"].map((t, i) => {
+              {["Submitted", "In review", "Shortlist", "Round 1 vote"].map((t, i) => {
                 const done = i === 0;
                 const now = i === 1;
                 return (
                   <div key={t} className="flex flex-1 flex-col items-start">
                     <div className="flex w-full items-center">
                       <motion.span
-                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${done ? "bg-call" : now ? "border-2 border-idea" : "border border-white/25"}`}
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${done ? "bg-talent" : now ? "border-2 border-idea" : "border border-white/25"}`}
                         animate={now ? { scale: [1, 1.15, 1] } : undefined}
                         transition={{ duration: 1.4, repeat: Infinity }}
                       >
                         {done && <Check size={11} strokeWidth={3} />}
                       </motion.span>
-                      {i < 3 && <span className={`mx-1 h-px flex-1 ${done ? "bg-call" : "bg-white/15"}`} />}
+                      {i < 3 && <span className={`mx-1 h-px flex-1 ${done ? "bg-talent" : "bg-white/15"}`} />}
                     </div>
                     <span className={`mt-1.5 text-[10px] font-bold ${done || now ? "text-white/80" : "text-white/35"}`}>{t}</span>
                   </div>

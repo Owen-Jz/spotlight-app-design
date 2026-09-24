@@ -19,7 +19,7 @@ export function MeScout() {
   // categories they care about: their interests, else every talent category
   const cats = user.interests.filter((i) => TALENT_CATEGORIES.includes(i));
   const focus = cats.length ? cats : TALENT_CATEGORIES;
-  const trending = PEOPLE.filter((p) => p.show !== "idea" && (focus.includes(p.category) || p.show === "task"))
+  const trending = PEOPLE.filter((p) => p.show === "talent" && focus.includes(p.category))
     .sort((a, b) => totalVotes(b, extraVotes) - totalVotes(a, extraVotes))
     .slice(0, 6);
   const pitches = PEOPLE.filter((p) => p.show === "idea").sort((a, b) => totalVotes(b, extraVotes) - totalVotes(a, extraVotes));

@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Bell, Lightbulb, Phone, Timer } from "lucide-react";
+import { Bell, Lightbulb, Mic, type LucideIcon } from "lucide-react";
+import type { ShowKey } from "@/lib/data";
 import { type ReactNode } from "react";
 import { useNav } from "../../nav";
 import { stagger } from "../../ui";
@@ -31,7 +32,7 @@ export function BellButton() {
           key={unread}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-call px-1 text-[9px] font-extrabold shadow-[0_0_10px_rgba(255,90,31,.8)]"
+          className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-talent px-1 text-[9px] font-extrabold shadow-[0_0_10px_rgba(255,90,31,.8)]"
         >
           {unread}
         </motion.span>
@@ -62,4 +63,7 @@ export function Page({ title, right, children }: { title: string; right?: ReactN
   );
 }
 
-export const SHOW_ICON = { call: Phone, task: Timer, idea: Lightbulb };
+export const SHOW_ICON: Record<ShowKey, LucideIcon> = { talent: Mic, idea: Lightbulb };
+
+/** Each show's backdrop clip in /public/media/v (the Talent one is a concert-crowd clip). */
+export const SHOW_VIDEO: Record<ShowKey, string> = { talent: "show-talent", idea: "show-idea" };

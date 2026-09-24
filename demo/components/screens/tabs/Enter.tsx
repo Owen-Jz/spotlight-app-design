@@ -2,10 +2,11 @@
 
 import { motion } from "motion/react";
 import { ArrowUpRight, Clock, Film } from "lucide-react";
-import { SHOWS, type ShowKey } from "@/lib/data";
+import { IDEA_SECTORS, SHOWS, type ShowKey } from "@/lib/data";
+import { JOURNEYS } from "../profile/parts";
 import { useNav, type Route } from "../../nav";
 import { Media, glass, rise } from "../../ui";
-import { Page, SHOW_ICON } from "./common";
+import { Page, SHOW_ICON, SHOW_VIDEO } from "./common";
 
 /* ---------------- Enter ---------------- */
 
@@ -17,36 +18,24 @@ type Opt = {
   needs: string[];
   deadline: string;
   go: Route;
-  /** spots taken of 10, for The Task's race */
-  spots?: number;
 };
 
 const OPTS: Opt[] = [
   {
-    k: "call",
-    t: "Sell yourself in 1 minute",
-    d: "Record a 60-second intro. If the organisers pick you, Spotlight calls you with your first task.",
+    k: "talent",
+    t: "Show your talent in 1 minute",
+    d: "Post a 1-minute showcase. If the organisers shortlist you, the public votes, and Round 2 is a 2-minute performance posted within 24 hours.",
     cta: "Record now",
-    needs: ["Your phone camera", "60 seconds", "Any talent"],
-    deadline: "Intros close in 3d",
+    needs: ["Your camera", "60 seconds", "Any talent"],
+    deadline: "Showcases close in 3d",
     go: { name: "record" },
-  },
-  {
-    k: "task",
-    t: "Join the race",
-    d: "Finish the photo task fast. The first 10 to finish qualify, then the votes decide.",
-    cta: "See the task",
-    needs: ["5 photos", "Speed", "Free to enter"],
-    deadline: "3 spots left",
-    go: { name: "hub", show: "task" },
-    spots: 7,
   },
   {
     k: "idea",
     t: "Pitch your business",
-    d: "Buy airtime, pitch to investors on camera, and let Africa vote for the idea.",
-    cta: "Book airtime",
-    needs: ["2–5 min pitch", "Any sector", "Airtime pack"],
+    d: "Book a pitch slot, record your pitch for the investors, take a live Q&A with the panel, and let Africa vote for the idea.",
+    cta: "Book a pitch slot",
+    needs: ["2–5 min pitch", `Any of ${IDEA_SECTORS.length} sectors`, "A business idea"],
     deadline: "Closes in 2d 4h",
     go: { name: "hub", show: "idea" },
   },
@@ -57,7 +46,7 @@ export function Enter() {
   return (
     <Page title="Enter a show">
       <motion.p variants={rise} className="mb-5 text-[14px] text-white/55">
-        Pick your stage. Your shot starts here.
+        Two stages. Pick yours. Your shot starts here.
       </motion.p>
 
       <div className="space-y-4">
@@ -102,10 +91,10 @@ export function Enter() {
         <div className="text-[12px] font-bold uppercase tracking-wider text-white/40">How it works</div>
         <div className="relative mt-4 grid grid-cols-4 gap-2 text-center">
           {/* the thread between the steps */}
-          <div className="absolute left-[12.5%] right-[12.5%] top-4 h-px bg-gradient-to-r from-call/60 via-call/30 to-call/10" />
-          {["Enter", "Get picked", "Get the call", "Win votes"].map((t, i) => (
+          <div className="absolute left-[12.5%] right-[12.5%] top-4 h-px bg-gradient-to-r from-talent/60 via-talent/30 to-talent/10" />
+          {["Enter", "Get picked", "Go live", "Win votes"].map((t, i) => (
             <div key={t} className="relative">
-              <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full border border-call/30 bg-ink font-display text-[12px] font-bold text-call">
+              <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full border border-talent/30 bg-ink font-display text-[12px] font-bold text-talent">
                 {i + 1}
               </div>
               <div className="mt-2 text-[11px] font-semibold text-white/70">{t}</div>
@@ -121,6 +110,7 @@ export function Enter() {
 function ShowCard({ o, onGo }: { o: Opt; onGo: () => void }) {
   const s = SHOWS[o.k];
   const Icon = SHOW_ICON[o.k];
+  const steps = JOURNEYS[o.k];
   return (
     <motion.button
       variants={rise}
@@ -131,7 +121,7 @@ function ShowCard({ o, onGo }: { o: Opt; onGo: () => void }) {
     >
       {/* the show's own footage */}
       <div className="relative h-[150px]">
-        <Media hue={[s.color, "#15152a"]} video={`show-${o.k}`} />
+        <Media hue={[s.color, "#15152a"]} video={SHOW_VIDEO[o.k]} />
         <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3.5">
           <span
             className="flex h-10 w-10 items-center justify-center rounded-2xl"
@@ -140,7 +130,7 @@ function ShowCard({ o, onGo }: { o: Opt; onGo: () => void }) {
               boxShadow: `inset 0 1px 0 rgba(255,255,255,.3), 0 10px 22px -10px ${s.color}`,
             }}
           >
-            <Icon size={19} fill={o.k === "call" ? "white" : "none"} strokeWidth={o.k === "call" ? 0 : 2.2} />
+            <Icon size={19} strokeWidth={2.2} />
           </span>
           <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/45 px-2.5 py-1 text-[11px] font-bold backdrop-blur-xl">
             <Clock size={12} style={{ color: s.color }} /> {o.deadline}
@@ -157,25 +147,23 @@ function ShowCard({ o, onGo }: { o: Opt; onGo: () => void }) {
       <div className="bg-white/[0.04] p-4 backdrop-blur-2xl">
         <p className="text-[13px] leading-snug text-white/60">{o.d}</p>
 
-        {o.spots !== undefined && (
-          <div className="mt-3">
-            <div className="flex gap-1">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <motion.span
-                  key={i}
-                  className="h-1.5 flex-1 rounded-full"
-                  initial={{ opacity: 0.2 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
-                  style={{ background: i < (o.spots ?? 0) ? s.color : "rgba(255,255,255,.12)" }}
-                />
-              ))}
-            </div>
-            <div className="mt-1.5 text-[11px] font-semibold text-white/45">
-              {o.spots} of 10 spots taken
-            </div>
-          </div>
-        )}
+        {/* the road from entry to winner */}
+        <div className="mt-3 flex items-center gap-1">
+          {steps.map((st, i) => (
+            <motion.span
+              key={st.t}
+              className="h-1.5 flex-1 rounded-full"
+              initial={{ opacity: 0.15 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 + i * 0.06 }}
+              style={{ background: `color-mix(in srgb, ${s.color} ${100 - i * (60 / steps.length)}%, rgba(255,255,255,.12))` }}
+            />
+          ))}
+        </div>
+        <div className="mt-1.5 flex justify-between text-[11px] font-semibold text-white/45">
+          <span>{steps[0].d}</span>
+          <span>{steps[steps.length - 1].t}</span>
+        </div>
 
         <div className="mt-3 text-[10px] font-bold uppercase tracking-wider text-white/35">What you need</div>
         <div className="mt-1.5 flex flex-wrap gap-1.5">

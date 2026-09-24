@@ -16,8 +16,7 @@ export type Route =
   | { name: "interests" }
   | { name: "main" }
   | { name: "hub"; show: ShowKey }
-  | { name: "record"; task?: string }
-  | { name: "incoming" }
+  | { name: "record"; brief?: string }
   | { name: "live" }
   | { name: "profile"; id: string }
   | { name: "search" }
@@ -36,7 +35,7 @@ export type SheetState =
 
 export type Comment = { id: number; user: string; text: string; likes: number; mine?: boolean };
 export type Entry = { id: string; show: ShowKey; title: string; category: string; status: "In review" | "Live"; at: string };
-export type Alert = { id: number; kind: "call" | "live" | "vote" | "follow" | "result"; title: string; body: string; time: string; unread: boolean; go?: Route };
+export type Alert = { id: number; kind: "live" | "vote" | "follow" | "result"; title: string; body: string; time: string; unread: boolean; go?: Route };
 
 export type Role = "talent" | "fan" | "brand";
 

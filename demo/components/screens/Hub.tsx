@@ -3,12 +3,14 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { Timer } from "lucide-react";
 import { useRef } from "react";
-import { FINALISTS, IDEA_SECTORS, SHOWS, TASK_ITEMS, type ShowKey } from "@/lib/data";
+import { FINALISTS, IDEA_SECTORS, SHOWS, type ShowKey } from "@/lib/data";
 import { Media, TopBar, rise, stagger } from "../ui";
-import { CallHub } from "./hub/CallHub";
 import { IdeaHub, INVESTORS } from "./hub/IdeaHub";
 import { LIVE_VIEWERS, LiveDot, Roll, SHOW_LIVE, clock, num, useCountdown, useDrift, useTicker } from "./hub/live";
-import { TaskHub, useTaskRace } from "./hub/TaskHub";
+import { TalentHub } from "./hub/TalentHub";
+
+/** Hero footage per show (stage + crowd clips in /public/media/v). */
+const HERO_CLIP: Record<ShowKey, string> = { talent: "show-talent", idea: "show-idea" };
 
 export function Hub({ show }: { show: ShowKey }) {
   const s = SHOWS[show];
@@ -21,38 +23,30 @@ export function Hub({ show }: { show: ShowKey }) {
   const textO = useTransform(scrollY, [0, 260], [1, 0]);
   const barO = useTransform(scrollY, [240, 320], [0, 1]);
 
-  const race = useTaskRace(show === "task");
   const left = useCountdown(SHOW_LIVE[show].seconds);
   const viewers = useDrift(LIVE_VIEWERS, 60, 1500);
   const votes = useTicker(1284310, { min: 4, max: 38, every: 900 });
-  const attempts = useTicker(2318, { min: 0, max: 3, every: 2200 });
   const pitches = useTicker(1204, { min: 0, max: 2, every: 3000 });
 
   const stats: { label: string; value: string; live?: boolean }[] =
-    show === "call"
+    show === "talent"
       ? [
           { label: "Watching", value: num(viewers), live: true },
           { label: "Votes cast", value: num(votes), live: true },
           { label: "Finalists", value: String(FINALISTS.length) },
         ]
-      : show === "task"
-        ? [
-            { label: "Spots left", value: String(10 - race.taken), live: true },
-            { label: "Attempts", value: num(attempts), live: true },
-            { label: "Items", value: String(TASK_ITEMS.length) },
-          ]
-        : [
-            { label: "Pitches", value: num(pitches), live: true },
-            { label: "Investors", value: String(INVESTORS.length) },
-            { label: "Sectors", value: String(IDEA_SECTORS.length) },
-          ];
+      : [
+          { label: "Pitches", value: num(pitches), live: true },
+          { label: "Investors", value: String(INVESTORS.length) },
+          { label: "Sectors", value: String(IDEA_SECTORS.length) },
+        ];
 
   return (
     <div className="relative h-full">
       <div ref={scroller} className="no-bar relative h-full overflow-y-auto pb-12">
         <div className="relative h-[400px] overflow-hidden">
           <motion.div className="absolute inset-0" style={{ y: heroY, scale: heroScale }}>
-            <Media hue={[s.color, "#15152a"]} video={`show-${show}`} />
+            <Media hue={[s.color, "#15152a"]} video={HERO_CLIP[show]} />
           </motion.div>
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
           <motion.div
@@ -63,7 +57,7 @@ export function Hub({ show }: { show: ShowKey }) {
             className="absolute inset-x-0 bottom-0 px-6 pb-6"
           >
             <motion.div variants={rise} className="flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: s.color }}>
-              {show === "call" && <LiveDot color={s.color} />}
+              {show === "talent" && <LiveDot color={s.color} />}
               Season 1 · {s.stage}
             </motion.div>
             <motion.h1
@@ -114,9 +108,7 @@ export function Hub({ show }: { show: ShowKey }) {
         </motion.div>
 
         <div className="px-6 pt-2">
-          {show === "call" && <CallHub />}
-          {show === "task" && <TaskHub race={race} />}
-          {show === "idea" && <IdeaHub />}
+          {show === "talent" ? <TalentHub /> : <IdeaHub />}
         </div>
       </div>
 

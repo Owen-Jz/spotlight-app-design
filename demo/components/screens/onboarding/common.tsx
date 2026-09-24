@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Check } from "lucide-react";
 import type { ReactNode } from "react";
+import type { ShowKey } from "@/lib/data";
 import type { Role, Route } from "../../nav";
 import { useNav } from "../../nav";
 import { Button, TopBar, rise, stagger } from "../../ui";
@@ -37,8 +38,8 @@ export function useFlow() {
  * timing, organisation type). Plain module state: written from event
  * handlers, read by the celebration.
  */
-export const draft: { shows: ("call" | "task" | "idea")[]; recordNow: boolean; orgType: string } = {
-  shows: ["call"],
+export const draft: { shows: ShowKey[]; recordNow: boolean; orgType: string } = {
+  shows: ["talent"],
   recordNow: true,
   orgType: "",
 };
@@ -150,7 +151,7 @@ export function Field({
   return (
     <motion.label variants={rise} className="block">
       <span className="text-xs font-bold uppercase tracking-wider text-white/40">{label}</span>
-      <div className="mt-2 flex items-center rounded-2xl border border-white/10 bg-white/[0.04] px-4 transition-colors focus-within:border-call focus-within:bg-white/[0.06]">
+      <div className="mt-2 flex items-center rounded-2xl border border-white/10 bg-white/[0.04] px-4 transition-colors focus-within:border-talent focus-within:bg-white/[0.06]">
         {prefix && <span className="mr-2 font-semibold text-white/50">{prefix}</span>}
         <input
           type={type}

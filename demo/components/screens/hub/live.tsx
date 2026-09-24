@@ -130,9 +130,8 @@ export function SectionTitle({ children, right }: { children: ReactNode; right?:
 
 /** What each show is counting down to right now, and the numbers that move. */
 export const SHOW_LIVE: Record<ShowKey, { until: string; seconds: number; cta: string }> = {
-  call: { until: "Vote 2 closes in", seconds: 58 * 60 + 12, cta: "Watch live" },
-  task: { until: "Race closes in", seconds: 5 * 3600 + 12 * 60 + 40, cta: "Race in" },
-  idea: { until: "Pitches close in", seconds: 2 * 86400 + 4 * 3600 + 9 * 60 + 31, cta: "Book a pitch" },
+  talent: { until: "Final vote closes in", seconds: 58 * 60 + 12, cta: "Watch live" },
+  idea: { until: "Pitches close in", seconds: 2 * 86400 + 4 * 3600 + 9 * 60 + 31, cta: "Book a pitch slot" },
 };
 
 /** Viewers on the live grand final — matches the Live screen's starting count. */

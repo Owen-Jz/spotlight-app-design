@@ -7,7 +7,7 @@ import { DAILY_FREE_VOTES, SHOWS, fmt, type ShowKey } from "@/lib/data";
 import { useNav } from "../../../nav";
 import { Avatar, Flag, glass } from "../../../ui";
 import { Move, Ring } from "./charts";
-import { CLOSES, UP, countdown, useNow, type Ranked } from "./model";
+import { CLOSES, FILTERS, UP, countdown, useNow, type Ranked, type ShowFilter } from "./model";
 
 export function SectionTitle({ children, right }: { children: ReactNode; right?: ReactNode }) {
   return (
@@ -20,10 +20,10 @@ export function SectionTitle({ children, right }: { children: ReactNode; right?:
 
 /* ---------------- live status: countdown + my votes ---------------- */
 
-export function StatusCard({ show, total, fresh }: { show: ShowKey; total: number; fresh: number }) {
+export function StatusCard({ show, total, fresh }: { show: ShowFilter; total: number; fresh: number }) {
   const { freeVotes, votesLeft } = useNav();
   const now = useNow();
-  const color = SHOWS[show].color;
+  const color = FILTERS[show].color;
   const close = CLOSES[show];
   const { days, clock } = countdown(now ? close.at(now) - now : 0);
   const urgent = now > 0 && days === 0 && close.at(now) - now < 3600;
@@ -43,7 +43,7 @@ export function StatusCard({ show, total, fresh }: { show: ShowKey; total: numbe
           <div className="mt-1.5 flex items-center gap-1 text-[11px] text-white/50">
             <Clock size={11} /> Voting closes in
           </div>
-          <div className={`font-display text-[26px] font-extrabold tabular-nums leading-tight tracking-tight ${urgent ? "text-call" : ""}`} suppressHydrationWarning>
+          <div className={`font-display text-[26px] font-extrabold tabular-nums leading-tight tracking-tight ${urgent ? "text-talent" : ""}`} suppressHydrationWarning>
             {now ? (
               <>
                 {days > 0 && <span>{days}d </span>}
@@ -65,7 +65,7 @@ export function StatusCard({ show, total, fresh }: { show: ShowKey; total: numbe
       </div>
       <div className="relative mt-3 flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px]">
         <span className="text-white/50">
-          <b className="tabular-nums text-white">{fmt(total)}</b> votes cast in {SHOWS[show].name}
+          <b className="tabular-nums text-white">{fmt(total)}</b> votes cast in {show === "all" ? "both shows" : SHOWS[show].name}
         </span>
         {fresh > 0 && (
           <motion.span key={fresh} initial={{ scale: 1.3 }} animate={{ scale: 1 }} className="font-bold tabular-nums" style={{ color: UP }}>
@@ -136,8 +136,8 @@ export function RisingFast({ list, onPick }: { list: Ranked[]; onPick: (id: stri
 
 /* ---------------- country leaderboard ---------------- */
 
-export function CountryBoard({ list, show, active, onPick }: { list: Ranked[]; show: ShowKey; active: string | null; onPick: (country: string) => void }) {
-  const color = SHOWS[show].color;
+export function CountryBoard({ list, show, active, onPick }: { list: Ranked[]; show: ShowFilter; active: string | null; onPick: (country: string) => void }) {
+  const color = FILTERS[show].color;
   const byCountry = new Map<string, { votes: number; people: number }>();
   for (const c of list) {
     const e = byCountry.get(c.country) ?? { votes: 0, people: 0 };

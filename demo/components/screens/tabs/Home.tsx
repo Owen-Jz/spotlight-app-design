@@ -74,7 +74,7 @@ export function Home() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => push({ name: "live" })}
-            className="flex shrink-0 items-center gap-1.5 rounded-full bg-call py-1.5 pl-2.5 pr-3 text-[12px] font-extrabold shadow-[0_6px_18px_-6px_#ff5a1f]"
+            className="flex shrink-0 items-center gap-1.5 rounded-full bg-talent py-1.5 pl-2.5 pr-3 text-[12px] font-extrabold shadow-[0_6px_18px_-6px_#ff5a1f]"
           >
             <motion.span className="h-1.5 w-1.5 rounded-full bg-white" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
             LIVE · Final
@@ -102,13 +102,13 @@ function EmptyFeed({ following, onReset }: { following: boolean; onReset: () => 
   const suggested = CONTESTANTS.filter((c) => !list.includes(c.id)).slice(0, 3);
   return (
     <div className="relative flex h-full flex-col items-center justify-center overflow-hidden px-8 text-center">
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-call/15 blur-[80px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-talent/15 blur-[80px]" />
       <div className="relative flex h-16 w-16 items-center justify-center rounded-3xl border border-white/10 bg-white/[0.06]">
         <Heart size={26} className="text-white/60" />
       </div>
       <div className="relative mt-5 font-display text-[18px] font-bold">{following ? "Nothing here yet" : "No entries in this category"}</div>
       <p className="relative mt-2 text-[14px] text-white/50">
-        {following ? "Follow contestants and their entries show up here first." : "Try another category, or check back after the next call."}
+        {following ? "Follow contestants and their entries show up here first." : "Try another category, or check back after the next round."}
       </p>
 
       {following && suggested.length > 0 && (
@@ -132,7 +132,7 @@ function EmptyFeed({ following, onReset }: { following: boolean; onReset: () => 
                   toggleFollow(c.id);
                   toast(`Following ${c.name.split(" ")[0]}`);
                 }}
-                className="rounded-full bg-call px-3.5 py-1.5 text-[12px] font-extrabold"
+                className="rounded-full bg-talent px-3.5 py-1.5 text-[12px] font-extrabold"
               >
                 Follow
               </motion.button>
@@ -263,7 +263,7 @@ function FeedItem({ c, muted, setMuted }: { c: Contestant; muted: boolean; setMu
               toggleFollow(c.id);
               toast(follows ? `Unfollowed ${first}` : `Following ${first}`);
             }}
-            className={`absolute -bottom-2 left-1/2 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full transition-colors ${follows ? "bg-white text-ink" : "bg-call"}`}
+            className={`absolute -bottom-2 left-1/2 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full transition-colors ${follows ? "bg-white text-ink" : "bg-talent"}`}
             aria-label={follows ? "Unfollow" : "Follow"}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -412,7 +412,7 @@ function CommentTicker({ id }: { id: string }) {
             {m.user[0].toUpperCase()}
           </span>
           <span className="truncate text-[12px]">
-            <b className={m.mine ? "text-call" : "text-white/60"}>{m.user}</b> {m.text}
+            <b className={m.mine ? "text-talent" : "text-white/60"}>{m.user}</b> {m.text}
           </span>
         </motion.div>
       </AnimatePresence>

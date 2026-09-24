@@ -1,16 +1,25 @@
 import { useSyncExternalStore } from "react";
-import { PEOPLE, statsFor, type Contestant, type ShowKey, type Stats } from "@/lib/data";
+import { PEOPLE, SHOWS, statsFor, type Contestant, type ShowKey, type Stats } from "@/lib/data";
+
+/** The Ranks tab's show filter: both shows together, or one of them. */
+export type ShowFilter = "all" | ShowKey;
+export const FILTER_KEYS: ShowFilter[] = ["all", ...(Object.keys(SHOWS) as ShowKey[])];
+export const FILTERS: Record<ShowFilter, { name: string; color: string }> = {
+  all: { name: "All", color: "#f4efe6" },
+  talent: { name: SHOWS.talent.name, color: SHOWS.talent.color },
+  idea: { name: SHOWS.idea.name, color: SHOWS.idea.color },
+};
 
 /* ---------------- ranking model ---------------- */
 
 export type Ranked = Contestant & {
   /** base votes + votes added this session */
   total: number;
-  /** live rank in their show (1-based) */
+  /** live rank in the ranked list (1-based) */
   rank: number;
   /** places moved: yesterday's movement + any live overtakes (+ = up) */
   move: number;
-  /** live % of the show's votes */
+  /** live % of the ranked list's votes */
   share: number;
   /** 7-day trend with this session's votes folded into today */
   trend: number[];
@@ -32,8 +41,9 @@ export const cachedStats = (c: Contestant) => {
   return s;
 };
 
-export function rankShow(show: ShowKey, extra: Record<string, number>): Ranked[] {
-  const people = PEOPLE.filter((c) => c.show === show);
+/** Live ranking for one show, or for everyone across both shows. */
+export function rankShow(show: ShowFilter, extra: Record<string, number>): Ranked[] {
+  const people = show === "all" ? PEOPLE : PEOPLE.filter((c) => c.show === show);
   const baseOrder = [...people].sort((a, b) => b.votes - a.votes).map((c) => c.id);
   const withTotals = people.map((c) => ({ c, total: c.votes + (extra[c.id] ?? 0) })).sort((a, b) => b.total - a.total);
   const showTotal = withTotals.reduce((a, x) => a + x.total, 0) || 1;
@@ -85,10 +95,18 @@ function nextUtc(now: number, hourUtc: number, weekday?: number) {
   return t;
 }
 
-export const CLOSES: Record<ShowKey, { round: string; label: string; at: (now: number) => number }> = {
-  call: { round: "Round 2 · Public vote", label: "Closes 9:00 PM WAT", at: (n) => nextUtc(n, 20) },
-  task: { round: "Final 10 · Crowd vote", label: "Closes 11:00 PM WAT", at: (n) => nextUtc(n, 22) },
-  idea: { round: "Pitch round · Investor vote", label: "Closes Sunday 9:00 PM WAT", at: (n) => nextUtc(n, 20, 0) },
+type Close = { round: string; label: string; at: (now: number) => number };
+const TALENT_CLOSE: Close = { round: "Round 2 · Public vote", label: "Closes 9:00 PM WAT", at: (n) => nextUtc(n, 20) };
+const IDEA_CLOSE: Close = { round: "Pitch round · Public vote", label: "Closes Sunday 9:00 PM WAT", at: (n) => nextUtc(n, 20, 0) };
+
+export const CLOSES: Record<ShowFilter, Close> = {
+  all: {
+    round: `${SHOWS.talent.name} + ${SHOWS.idea.name} · Public vote`,
+    label: `Next up: ${SHOWS.talent.name} closes 9:00 PM WAT`,
+    at: (n) => Math.min(TALENT_CLOSE.at(n), IDEA_CLOSE.at(n)),
+  },
+  talent: TALENT_CLOSE,
+  idea: IDEA_CLOSE,
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");

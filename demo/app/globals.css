@@ -7,8 +7,8 @@
   --color-spot: #f4f1ea; /* the warm white of the beam */
   --color-line: rgb(255 255 255 / 0.08);
   --color-mute: #8d8d99;
-  --color-call: #ff5a1f;
-  --color-task: #4c7dff;
+  --color-talent: #ff5a1f;
+  --color-blue: #4c7dff;
   --color-idea: #f2b53a;
   --font-display: var(--font-display);
   --font-brand: var(--font-brand);
