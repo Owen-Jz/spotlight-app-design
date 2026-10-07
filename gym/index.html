@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forge Gym · Strength, Conditioning, Community</title>
+  <meta name="description" content="Forge Gym: open 24/7, coached classes, personal training and a free 7-day trial.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav" id="top">
+    <a class="brand" href="#top" aria-label="Forge Gym home">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M4 12h3v8H4zM25 12h3v8h-3zM8 9h4v14H8zM20 9h4v14h-4zM12 14.5h8v3h-8z" fill="currentColor"/></svg>
+      <span>FORGE</span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-links" class="nav-links">
+      <a href="#classes">Classes</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#pricing">Membership</a>
+      <a href="#coaches">Coaches</a>
+      <a href="#faq">FAQ</a>
+      <a href="#trial" class="btn btn-sm">Free trial</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow">Open 24/7 · Coached classes 7 days a week</p>
+        <h1>Built<br>the hard<br><span>way.</span></h1>
+        <p class="lede">Real coaching, serious equipment and a crew that shows up. Strength, conditioning, boxing and mobility under one roof.</p>
+        <div class="hero-cta">
+          <a href="#trial" class="btn">Start 7 days free</a>
+          <a href="#schedule" class="btn btn-ghost">See the schedule</a>
+        </div>
+        <ul class="stats">
+          <li><strong data-count="24">0</strong><span>classes a week</span></li>
+          <li><strong data-count="4">0</strong><span>head coaches</span></li>
+          <li><strong data-count="1800">0</strong><span>members strong</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="classes" class="section">
+      <div class="section-head">
+        <p class="eyebrow">What we do</p>
+        <h2>Classes</h2>
+      </div>
+      <div class="cards">
+        <article class="card" style="--accent:#ff5a1f">
+          <div class="card-icon">🏋️</div>
+          <h3>Strength</h3>
+          <p>Barbell fundamentals and progressive programming. Squat, press, pull, repeat.</p>
+          <span class="tag">60 min · All levels</span>
+        </article>
+        <article class="card" style="--accent:#ffd21f">
+          <div class="card-icon">🔥</div>
+          <h3>Conditioning</h3>
+          <p>High-intensity intervals on rowers, bikes and sleds. Leave nothing in the tank.</p>
+          <span class="tag">45 min · Intermediate</span>
+        </article>
+        <article class="card" style="--accent:#1fd2ff">
+          <div class="card-icon">🥊</div>
+          <h3>Boxing</h3>
+          <p>Pad work, footwork and bag rounds. Technique first, sweat guaranteed.</p>
+          <span class="tag">50 min · All levels</span>
+        </article>
+        <article class="card" style="--accent:#7cff6b">
+          <div class="card-icon">🧘</div>
+          <h3>Mobility</h3>
+          <p>Stretch, breathe and recover so you can come back tomorrow and go again.</p>
+          <span class="tag">40 min · Beginner</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="schedule" class="section section-alt">
+      <div class="section-head">
+        <p class="eyebrow">This week</p>
+        <h2>Schedule</h2>
+      </div>
+      <div class="filters" role="tablist" aria-label="Filter classes">
+        <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="chip" data-filter="Strength" role="tab" aria-selected="false">Strength</button>
+        <button class="chip" data-filter="Conditioning" role="tab" aria-selected="false">Conditioning</button>
+        <button class="chip" data-filter="Boxing" role="tab" aria-selected="false">Boxing</button>
+        <button class="chip" data-filter="Mobility" role="tab" aria-selected="false">Mobility</button>
+      </div>
+      <div class="day-tabs" id="day-tabs" aria-label="Choose a day"></div>
+      <ul class="schedule" id="schedule-list" aria-live="polite"></ul>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="section-head">
+        <p class="eyebrow">Membership</p>
+        <h2>Pick your plan</h2>
+      </div>
+      <div class="billing">
+        <span>Monthly</span>
+        <button class="switch" id="billing-switch" role="switch" aria-checked="false" aria-label="Bill yearly"><span></span></button>
+        <span>Yearly <em>save 20%</em></span>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Open Gym</h3>
+          <p class="price"><span class="amount" data-monthly="29" data-yearly="23">29</span><small>/mo</small></p>
+          <ul>
+            <li>24/7 floor access</li>
+            <li>Locker rooms and showers</li>
+            <li>Free intro session</li>
+          </ul>
+          <a href="#trial" class="btn btn-ghost" data-plan="Open Gym">Choose Open Gym</a>
+        </article>
+        <article class="plan featured">
+          <span class="badge">Most popular</span>
+          <h3>Unlimited</h3>
+          <p class="price"><span class="amount" data-monthly="59" data-yearly="47">59</span><small>/mo</small></p>
+          <ul>
+            <li>Everything in Open Gym</li>
+            <li>Unlimited coached classes</li>
+            <li>Quarterly body-comp scan</li>
+            <li>Bring a friend on Fridays</li>
+          </ul>
+          <a href="#trial" class="btn" data-plan="Unlimited">Choose Unlimited</a>
+        </article>
+        <article class="plan">
+          <h3>Coached</h3>
+          <p class="price"><span class="amount" data-monthly="149" data-yearly="119">149</span><small>/mo</small></p>
+          <ul>
+            <li>Everything in Unlimited</li>
+            <li>4 personal training sessions</li>
+            <li>Custom program and nutrition plan</li>
+          </ul>
+          <a href="#trial" class="btn btn-ghost" data-plan="Coached">Choose Coached</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="coaches" class="section section-alt">
+      <div class="section-head">
+        <p class="eyebrow">The team</p>
+        <h2>Coaches</h2>
+      </div>
+      <div class="coaches">
+        <article class="coach"><div class="avatar" style="--g1:#ff5a1f;--g2:#ffd21f">MR</div><h3>Maya Reyes</h3><p>Head of Strength · Powerlifting</p></article>
+        <article class="coach"><div class="avatar" style="--g1:#1fd2ff;--g2:#6b5bff">DK</div><h3>Dami Kolade</h3><p>Boxing · Former amateur champ</p></article>
+        <article class="coach"><div class="avatar" style="--g1:#7cff6b;--g2:#1fd2ff">SL</div><h3>Sam Lindqvist</h3><p>Conditioning · Endurance</p></article>
+        <article class="coach"><div class="avatar" style="--g1:#ff4fa3;--g2:#ff5a1f">AN</div><h3>Aiko Nakamura</h3><p>Mobility · Physio-trained</p></article>
+      </div>
+    </section>
+
+    <section class="section quotes">
+      <blockquote>
+        <p>“Six months in and I pulled double bodyweight. The coaches here actually watch your form.”</p>
+        <cite>Jordan, member since 2025</cite>
+      </blockquote>
+      <blockquote>
+        <p>“The 6am crew is the reason I get out of bed. Best community I've ever trained with.”</p>
+        <cite>Priya, member since 2024</cite>
+      </blockquote>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq">
+        <details><summary>Do I need experience to join a class?</summary><p>No. Every class has scaled options and coaches will walk you through each movement on your first visit.</p></details>
+        <details><summary>Is there a joining fee or contract?</summary><p>No joining fee. Monthly plans can be cancelled any time with 30 days' notice. Yearly plans are paid up front.</p></details>
+        <details><summary>How does the free trial work?</summary><p>Seven days of full Unlimited access. No card needed. We'll book you an intro session with a coach on day one.</p></details>
+        <details><summary>Can I freeze my membership?</summary><p>Yes, up to two months a year for travel or injury, free of charge.</p></details>
+      </div>
+    </section>
+
+    <section id="trial" class="section trial">
+      <div class="trial-copy">
+        <p class="eyebrow">No card needed</p>
+        <h2>Claim your free week</h2>
+        <p>Leave your details and a coach will be in touch within a day to book your first session.</p>
+        <p class="address">12 Foundry Lane · Open 24/7 · Staffed 6am to 10pm</p>
+      </div>
+      <form id="trial-form" class="form" novalidate>
+        <label>Full name<input name="name" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel"></label>
+        <label>Interested in
+          <select name="plan">
+            <option>Unlimited</option>
+            <option>Open Gym</option>
+            <option>Coached</option>
+          </select>
+        </label>
+        <button class="btn" type="submit">Book my free week</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Forge Gym</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
